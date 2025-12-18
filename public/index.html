@@ -3,206 +3,148 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FireScrape 🔥 | Smart API for Vercel</title>
+  <title>FireScrape</title>
   <link rel="stylesheet" href="/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body class="light">
 
   <div class="container">
     <nav>
       <a href="/" class="logo">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#ff4b1f"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.113.25-2.127.6-3 .36 1.25 1.4 2.1 2.9 2.5z"></path></svg>
+        <i data-lucide="flame" style="color: var(--primary)"></i>
         FireScrape
       </a>
-      <div class="controls">
-        <button onclick="toggleLang('en')" id="btn-en">EN</button>
-        <button onclick="toggleLang('ru')" id="btn-ru">RU</button>
+      <div class="nav-links">
+        <a href="https://github.com/aasm3535/firescrape" target="_blank" class="btn btn-outline btn-sm">
+          <i data-lucide="github" style="width: 16px; margin-right: 6px;"></i>
+          GitHub
+        </a>
+        <button onclick="toggleTheme()" class="btn btn-ghost btn-sm">
+          <i data-lucide="moon" id="theme-icon" style="width: 16px;"></i>
+        </button>
       </div>
     </nav>
 
-    <!-- HERO SECTION -->
-    <header class="hero">
-      <h1 data-lang="en">The Web, <span>Unlocked</span>.</h1>
-      <h1 data-lang="ru">Веб, <span>Разблокирован</span>.</h1>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="badge" style="margin-bottom: 1rem;">v2.0 Beta</div>
+      <h1>Scrape the web <span style="color: var(--primary)">without limits</span>.</h1>
+      <p>
+        A serverless API designed to bypass bot detection. Extract metadata, JSON-LD, and search results instantly.
+      </p>
       
-      <p data-lang="en">
-        A powerful scraping and search API designed for Vercel. 
-        Bypasses bot detection, handles metadata, and returns clean JSON.
-      </p>
-      <p data-lang="ru">
-        Мощный API для скрапинга и поиска, созданный для Vercel.
-        Обходит защиту от ботов, собирает метаданные и возвращает чистый JSON.
-      </p>
-
-      <div style="margin-top: 2rem;">
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Faasm3535%2Ffirescrape" target="_blank" style="text-decoration:none;">
-          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
-        </a>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="#playground" class="btn btn-primary">Try Playground</a>
+        <a href="#docs" class="btn btn-outline">Documentation</a>
       </div>
-    </header>
+    </section>
 
-    <!-- FEATURES GRID -->
+    <!-- Features -->
     <section class="grid">
       <div class="card">
-        <h3>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-          <span data-lang="en">Anti-Bot Evasion</span>
-          <span data-lang="ru">Обход Защиты</span>
-        </h3>
-        <p data-lang="en">Standard <code>fetch</code> requests get blocked (403). FireScrape rotates real browser User-Agents and headers to mimic a human user.</p>
-        <p data-lang="ru">Обычные <code>fetch</code> запросы блокируются (403). FireScrape ротирует User-Agent реальных браузеров, имитируя человека.</p>
+        <i data-lucide="shield-check" style="color: var(--primary); margin-bottom: 1rem;"></i>
+        <h3 style="margin-top:0">Evasion Logic</h3>
+        <p style="font-size: 0.875rem;">Mimics real browser headers to bypass 403 blocks and detects CAPTCHA pages to prevent garbage data.</p>
       </div>
-
       <div class="card">
-        <h3>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span data-lang="en">Smart Search</span>
-          <span data-lang="ru">Умный Поиск</span>
-        </h3>
-        <p data-lang="en">Don't parse Google HTML manually. Use our <code>/api/search</code> to get structured results (Title, Link, Snippet) instantly.</p>
-        <p data-lang="ru">Не парсите HTML поисковиков вручную. Используйте <code>/api/search</code> для получения структурированных данных (Заголовок, Ссылка, Описание).</p>
+        <i data-lucide="code-2" style="color: var(--primary); margin-bottom: 1rem;"></i>
+        <h3 style="margin-top:0">JSON-LD Extraction</h3>
+        <p style="font-size: 0.875rem;">Automatically extracts structured data (products, articles) even from complex sites.</p>
       </div>
-
       <div class="card">
-        <h3>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          <span data-lang="en">Lightning Fast</span>
-          <span data-lang="ru">Молниеносно</span>
-        </h3>
-        <p data-lang="en">Built on Bun runtime. Optimized for Vercel Serverless Functions with minimal cold start.</p>
-        <p data-lang="ru">Построено на Bun. Оптимизировано для Vercel Serverless Functions с минимальным холодным стартом.</p>
+        <i data-lucide="zap" style="color: var(--primary); margin-bottom: 1rem;"></i>
+        <h3 style="margin-top:0">Fast & Serverless</h3>
+        <p style="font-size: 0.875rem;">Optimized for Vercel/Bun. No heavy browser overhead, just pure speed.</p>
       </div>
     </section>
 
-    <!-- INTERACTIVE PLAYGROUND -->
-    <section>
-      <h2 style="text-align:center; margin-bottom:2rem;">
-        <span data-lang="en">Interactive Workbench</span>
-        <span data-lang="ru">Интерактивная Панель</span>
-      </h2>
-
-      <div class="browser-mockup">
-        <div class="browser-header">
-          <div class="dot red"></div>
-          <div class="dot yellow"></div>
-          <div class="dot green"></div>
-          <div class="url-bar" id="url-display">GET /api/scrape...</div>
+    <!-- Playground -->
+    <section id="playground" class="playground">
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div style="border-bottom: 1px solid var(--border); padding: 1rem; background: var(--secondary); display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-weight: 600; font-size: 0.875rem;">API Playground</div>
+          <div class="tabs">
+            <div class="tab active" onclick="setMode('scrape')" id="tab-scrape">Scrape</div>
+            <div class="tab" onclick="setMode('search')" id="tab-search">Search</div>
+          </div>
         </div>
 
-        <div class="browser-content">
-          <div class="method-select">
-            <label class="radio-label">
-              <input type="radio" name="mode" value="scrape" checked onclick="setMode('scrape')">
-              <span>/api/scrape</span>
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="mode" value="search" onclick="setMode('search')">
-              <span>/api/search</span>
-            </label>
-          </div>
-
+        <div style="padding: 1.5rem;">
           <div class="input-group">
-            <input type="text" id="inputField" placeholder="https://example.com">
-            <button class="btn-primary" onclick="executeApi()">
-              <span data-lang="en">Send Request 🚀</span>
-              <span data-lang="ru">Отправить 🚀</span>
-            </button>
+            <div style="display: flex; align-items: center; padding: 0 1rem; background: var(--muted); border-radius: var(--radius); border: 1px solid var(--border); font-family: monospace; font-size: 0.875rem; color: var(--muted-foreground);" id="method-badge">GET</div>
+            <input type="text" id="inputField" placeholder="https://example.com" onkeydown="if(event.key==='Enter') executeApi()">
+            <button class="btn btn-primary" onclick="executeApi()">Send</button>
           </div>
 
-          <pre id="output" style="display:none;"></pre>
-        </div>
-      </div>
-    </section>
-
-    <!-- DETAILED DOCS -->
-    <section style="margin-top: 5rem; margin-bottom: 5rem;">
-      <h2 style="margin-bottom:2rem;">
-        <span data-lang="en">Documentation</span>
-        <span data-lang="ru">Документация</span>
-      </h2>
-
-      <div class="grid">
-        <!-- SCRAPE DOCS -->
-        <div class="card" style="grid-column: span 2;">
-          <h3><code>GET /api/scrape</code></h3>
-          <p data-lang="en">Extracts metadata (OpenGraph), title, description, and main text content from a URL.</p>
-          <p data-lang="ru">Извлекает метаданные (OpenGraph), заголовок, описание и основной текст с URL.</p>
-          
-          <div style="background:rgba(0,0,0,0.3); padding:1rem; border-radius:8px; margin-top:1rem;">
-            <p style="margin:0; font-family:monospace; color:#ff79c6;">?url=<span style="color:#8be9fd">https://target.com</span></p>
-          </div>
-        </div>
-
-        <!-- SEARCH DOCS -->
-        <div class="card" style="grid-column: span 2;">
-          <h3><code>GET /api/search</code></h3>
-          <p data-lang="en">Performs a privacy-friendly web search (via DuckDuckGo HTML) and returns a list of results.</p>
-          <p data-lang="ru">Выполняет приватный поиск в интернете (через DuckDuckGo HTML) и возвращает список результатов.</p>
-          
-          <div style="background:rgba(0,0,0,0.3); padding:1rem; border-radius:8px; margin-top:1rem;">
-            <p style="margin:0; font-family:monospace; color:#ff79c6;">?q=<span style="color:#8be9fd">search query</span></p>
+          <div style="margin-top: 1.5rem;">
+            <div style="font-size: 0.75rem; font-weight: 600; color: var(--muted-foreground); margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+              <span>RESPONSE</span>
+              <span id="status-code"></span>
+            </div>
+            <pre id="output"><span style="color: var(--muted-foreground)">// Response will appear here...</span></pre>
           </div>
         </div>
       </div>
     </section>
-    
-    <footer style="text-align: center; color: var(--text-secondary); padding-bottom: 2rem;">
-      <p>MIT License &copy; 2025 FireScrape</p>
-    </footer>
+
+    <div class="footer">
+      <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Faasm3535%2Ffirescrape" target="_blank" style="text-decoration: none;">
+        <img src="https://vercel.com/button" alt="Deploy with Vercel" height="32" />
+      </a>
+      <p style="margin-top: 1rem; font-size: 0.875rem;">Designed with ❤️ for Builders</p>
+    </div>
 
   </div>
 
   <script>
-    // --- Logic for Interactivity ---
+    lucide.createIcons();
     let currentMode = 'scrape';
-
-    // Auto-detect language
-    const userLang = navigator.language || navigator.userLanguage;
-    if (userLang.startsWith('ru')) {
-      document.body.classList.add('lang-ru');
-    }
-
-    function toggleLang(lang) {
-      if (lang === 'ru') {
-        document.body.classList.add('lang-ru');
-      } else {
-        document.body.classList.remove('lang-ru');
-      }
-    }
 
     function setMode(mode) {
       currentMode = mode;
-      const input = document.getElementById('inputField');
-      const urlDisplay = document.getElementById('url-display');
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-' + mode).classList.add('active');
       
+      const input = document.getElementById('inputField');
       if (mode === 'scrape') {
-        input.placeholder = "https://example.com";
-        urlDisplay.innerText = "GET /api/scrape?url=...";
+        input.placeholder = "https://www.wildberries.ru/catalog/123...";
       } else {
-        input.placeholder = "Hello world";
-        urlDisplay.innerText = "GET /api/search?q=...";
+        input.placeholder = "iphone 15 case";
       }
     }
 
-    // JSON Syntax Highlighting
+    function toggleTheme() {
+      const body = document.body;
+      const icon = document.getElementById('theme-icon');
+      if (body.classList.contains('dark')) {
+        body.classList.remove('dark');
+        icon.setAttribute('data-lucide', 'moon');
+      } else {
+        body.classList.add('dark');
+        icon.setAttribute('data-lucide', 'sun');
+      }
+      lucide.createIcons();
+    }
+
     function syntaxHighlight(json) {
       if (typeof json != 'string') {
          json = JSON.stringify(json, undefined, 2);
       }
       json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       return json.replace(/("(\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        var cls = 'json-number';
-        if (/^".*"$/.test(match)) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
             if (/:$/.test(match)) {
-                cls = 'json-key';
+                cls = 'key';
             } else {
-                cls = 'json-string';
+                cls = 'string';
             }
         } else if (/true|false/.test(match)) {
-            cls = 'json-boolean';
+            cls = 'boolean';
         } else if (/null/.test(match)) {
-            cls = 'json-null';
+            cls = 'null';
         }
         return '<span class="' + cls + '">' + match + '</span>';
       });
@@ -211,12 +153,12 @@
     async function executeApi() {
       const input = document.getElementById('inputField').value;
       const output = document.getElementById('output');
-      const urlDisplay = document.getElementById('url-display');
+      const statusSpan = document.getElementById('status-code');
       
       if (!input) return;
 
-      output.style.display = 'block';
-      output.innerHTML = '<span style="color:#888">Loading... 🔥</span>';
+      output.innerHTML = '<span style="color: var(--muted-foreground)">Loading...</span>';
+      statusSpan.innerText = '';
 
       let endpoint = '';
       if (currentMode === 'scrape') {
@@ -224,16 +166,22 @@
       } else {
         endpoint = `/api/search?q=${encodeURIComponent(input)}`;
       }
-      
-      // Update fake url bar
-      urlDisplay.innerText = "GET " + endpoint;
 
       try {
+        const start = performance.now();
         const res = await fetch(endpoint);
+        const end = performance.now();
+        
         const data = await res.json();
+        
+        statusSpan.innerText = res.status + ' ' + res.statusText + ' (' + Math.round(end - start) + 'ms)';
+        statusSpan.style.color = res.ok ? '#16a34a' : '#ef4444';
+
         output.innerHTML = syntaxHighlight(data);
       } catch (err) {
-        output.innerHTML = '<span style="color:red">Error: ' + err.message + '</span>';
+        statusSpan.innerText = 'ERROR';
+        statusSpan.style.color = '#ef4444';
+        output.innerHTML = '<span style="color: #ef4444">' + err.message + '</span>';
       }
     }
   </script>
