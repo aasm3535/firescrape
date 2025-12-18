@@ -10,9 +10,12 @@
     /* Specific overrides for Playground layout */
     body { height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
     .pg-container { display: flex; flex: 1; overflow: hidden; }
-    .sidebar { width: 300px; border-right: 1px solid var(--border); padding: 1.5rem; display: flex; flex-direction: column; background: var(--card); }
+    .sidebar { width: 300px; border-right: 1px solid var(--border); padding: 1.5rem; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); }
+    .dark .sidebar { background: rgba(9, 9, 11, 0.5); }
+    
     .main { flex: 1; padding: 2rem; overflow-y: auto; background: var(--background); }
-    .nav-item { padding: 0.75rem; border-radius: var(--radius); cursor: pointer; display: flex; align-items: center; gap: 0.75rem; color: var(--muted-foreground); font-weight: 500; font-size: 0.875rem; }
+    
+    .nav-item { padding: 0.75rem; border-radius: var(--radius); cursor: pointer; display: flex; align-items: center; gap: 0.75rem; color: var(--muted-foreground); font-weight: 500; font-size: 0.875rem; transition: all 0.2s; }
     .nav-item:hover, .nav-item.active { background-color: var(--secondary); color: var(--foreground); }
     .nav-item.active { color: var(--primary); background-color: rgba(234, 88, 12, 0.1); }
     
@@ -34,17 +37,17 @@
       </a>
 
       <div class="mb-4">
-        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Mode</p>
+        <p class="lbl-mode" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em; color: var(--muted-foreground);">Mode</p>
         <div class="nav-item active" onclick="setMode('scrape')" id="nav-scrape">
-          <i data-lucide="globe" width="18"></i> Scrape URL
+          <i data-lucide="globe" width="18"></i> <span class="txt-scrape">Scrape URL</span>
         </div>
         <div class="nav-item" onclick="setMode('search')" id="nav-search">
-          <i data-lucide="search" width="18"></i> Web Search
+          <i data-lucide="search" width="18"></i> <span class="txt-search">Web Search</span>
         </div>
       </div>
 
       <div class="mb-4">
-        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Settings</p>
+        <p class="lbl-settings" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em; color: var(--muted-foreground);">Settings</p>
         <select id="langSwitcher" onchange="changeLang(this.value)">
           <option value="en">English</option>
           <option value="ru">Русский</option>
@@ -54,14 +57,14 @@
       </div>
 
       <div style="margin-top: auto;">
-        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">History</p>
+        <p class="lbl-history" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em; color: var(--muted-foreground);">History</p>
         <div id="history-list" class="flex flex-col gap-2" style="font-size: 0.75rem;"></div>
       </div>
     </aside>
 
     <!-- Main Content -->
     <main class="main">
-      <div class="card mb-4" style="border: none; padding: 0; background: transparent;">
+      <div class="card mb-4" style="border: none; padding: 0; background: transparent; box-shadow: none;">
         <div class="flex gap-2">
           <input type="text" id="inputField" placeholder="https://example.com" onkeydown="if(event.key==='Enter') executeApi()">
           <button class="btn btn-primary" onclick="executeApi()" style="padding: 0 1.5rem;">
@@ -70,7 +73,7 @@
         </div>
       </div>
 
-      <div class="card" style="min-height: 400px; display: flex; flex-direction: column; padding: 0;">
+      <div class="card" style="min-height: 500px; display: flex; flex-direction: column; padding: 0; overflow: hidden;">
         <div style="padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--muted);">
           <div class="tabs-list" style="margin: 0; background: transparent; padding: 0;">
             <div class="tab-trigger active" onclick="showTab('json')">JSON</div>
@@ -82,7 +85,7 @@
         <div id="view-json" style="flex: 1; padding: 0;">
           <pre style="border: none; border-radius: 0; height: 100%; margin: 0; background: var(--background);">Waiting for request...</pre>
         </div>
-        <div id="view-preview" class="hidden" style="padding: 1rem; white-space: pre-wrap; font-family: monospace;"></div>
+        <div id="view-preview" class="hidden" style="padding: 1.5rem; white-space: pre-wrap; font-family: monospace; font-size: 0.9rem; line-height: 1.6;"></div>
       </div>
     </main>
   </div>
@@ -90,13 +93,34 @@
   <script>
     lucide.createIcons();
     
+    // --- State & Config ---
     let currentMode = 'scrape';
     const placeholders = [
       "https://www.wildberries.ru/catalog/211688639/detail.aspx",
       "https://github.com/bunland/bun",
+      "https://ozon.ru/product/12345678",
       "https://example.com"
     ];
 
+    // --- I18n ---
+    const translations = {
+      en: { scrape: "Scrape URL", search: "Web Search", mode: "Mode", settings: "Settings", history: "History" },
+      ru: { scrape: "Парсинг URL", search: "Поиск в сети", mode: "Режим", settings: "Настройки", history: "История" },
+      es: { scrape: "Raspar URL", search: "Buscar Web", mode: "Modo", settings: "Ajustes", history: "Historia" },
+      zh: { scrape: "抓取网址", search: "网络搜索", mode: "模式", settings: "设置", history: "历史" }
+    };
+
+    function changeLang(lang) {
+      const t = translations[lang];
+      if (!t) return;
+      document.querySelector('.txt-scrape').innerText = t.scrape;
+      document.querySelector('.txt-search').innerText = t.search;
+      document.querySelector('.lbl-mode').innerText = t.mode;
+      document.querySelector('.lbl-settings').innerText = t.settings;
+      document.querySelector('.lbl-history').innerText = t.history;
+    }
+
+    // --- UI Logic ---
     function setMode(mode) {
       currentMode = mode;
       document.getElementById('nav-scrape').classList.toggle('active', mode === 'scrape');
@@ -123,10 +147,11 @@
       }
     }
 
+    // --- Execution ---
     function syntaxHighlight(json) {
       if (typeof json != 'string') json = JSON.stringify(json, undefined, 2);
       json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      return json.replace(/("(\u[a-zA-Z0-9]{4}|\.[^u]|[^\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+      return json.replace(/("(\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
         var cls = 'number';
         if (/^"/.test(match)) {
             if (/:$/.test(match)) cls = 'key';
@@ -150,12 +175,19 @@
       list.innerHTML = '';
       hist.forEach(item => {
         const div = document.createElement('div');
-        div.style.padding = '4px 8px';
+        div.style.padding = '6px 8px';
+        div.style.borderRadius = '4px';
         div.style.cursor = 'pointer';
         div.style.color = 'var(--muted-foreground)';
-        div.onmouseover = () => div.style.color = 'var(--primary)';
-        div.onmouseout = () => div.style.color = 'var(--muted-foreground)';
-        div.innerText = (item.mode === 'scrape' ? '🔗 ' : '🔍 ') + item.query.substring(0, 20) + '...';
+        div.style.transition = '0.2s';
+        div.onmouseover = () => { div.style.color = 'var(--foreground)'; div.style.background = 'var(--secondary)'; };
+        div.onmouseout = () => { div.style.color = 'var(--muted-foreground)'; div.style.background = 'transparent'; };
+        
+        div.innerHTML = `<div style="display:flex; align-items:center; gap:6px;">
+          <i data-lucide="${item.mode === 'scrape' ? 'globe' : 'search'}" width="14"></i>
+          <span>${item.query.substring(0, 18)}${item.query.length > 18 ? '...' : ''}</span>
+        </div>`;
+        
         div.onclick = () => {
           setMode(item.mode);
           document.getElementById('inputField').value = item.query;
@@ -163,6 +195,7 @@
         };
         list.appendChild(div);
       });
+      lucide.createIcons();
     }
 
     async function executeApi() {
@@ -174,7 +207,7 @@
       if (!input) return;
 
       addToHistory(currentMode, input);
-      jsonPre.innerHTML = 'Loading...';
+      jsonPre.innerHTML = '<span style="color:var(--muted-foreground)">Processing request...</span>';
       badge.classList.add('hidden');
 
       const endpoint = currentMode === 'scrape' ? `/api/scrape?url=${encodeURIComponent(input)}` : `/api/search?q=${encodeURIComponent(input)}`;
@@ -191,12 +224,19 @@
         jsonPre.innerHTML = syntaxHighlight(data);
 
         if (data.data && data.data.content_preview) preview.innerText = data.data.content_preview;
-        else if (data.results) preview.innerText = data.results.map(r => r.title + '\n' + r.link).join('\n\n');
-        else preview.innerText = "No preview available.";
+        else if (data.results) preview.innerText = data.results.map(r => `• ${r.title}\n  ${r.link}`).join('\n\n');
+        else preview.innerText = "No text preview available.";
 
       } catch (err) {
         jsonPre.innerText = err.message;
       }
+    }
+
+    // Auto-detect Language
+    const sysLang = (navigator.language || 'en').substring(0, 2);
+    if(translations[sysLang]) {
+      document.getElementById('langSwitcher').value = sysLang;
+      changeLang(sysLang);
     }
 
     // Theme Sync

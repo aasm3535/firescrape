@@ -27,21 +27,23 @@
     </nav>
 
     <!-- Hero -->
-    <main class="flex flex-col items-center justify-center" style="padding: 4rem 0; text-align: center;">
-      <div class="btn btn-outline" style="height:auto; padding: 4px 12px; font-size: 0.75rem; border-radius: 99px; margin-bottom: 1rem;">
+    <main class="flex flex-col items-center justify-center" style="padding: 6rem 0; text-align: center;">
+      <div class="btn btn-outline" style="height:auto; padding: 4px 12px; font-size: 0.75rem; border-radius: 99px; margin-bottom: 1.5rem; pointer-events: none;">
         v2.0 Beta
       </div>
-      <h1>Scrape the web <span style="color: var(--primary)">without limits</span>.</h1>
-      <p style="max-width: 600px; font-size: 1.125rem;">
+      
+      <h1 id="hero-title">Scrape the web <span style="color: var(--primary)">without limits</span>.</h1>
+      
+      <p id="hero-desc" style="max-width: 600px; font-size: 1.25rem; line-height: 1.6; margin-bottom: 2rem;">
         A serverless API built on Bun. Bypasses bot detection, handles CAPTCHA challenges, and extracts structured data instantly.
       </p>
       
       <div class="flex gap-4 mt-4">
-        <a href="/playground" class="btn btn-primary" style="height: 3rem; padding: 0 2rem; font-size: 1rem;">
-          <i data-lucide="play" style="width:18px; margin-right:8px"></i> Open Playground
+        <a href="/playground" class="btn btn-primary" style="height: 3.5rem; padding: 0 2.5rem; font-size: 1.1rem;">
+          <i data-lucide="play" style="width:20px; margin-right:8px"></i> <span id="btn-play">Open Playground</span>
         </a>
-        <a href="/docs" class="btn btn-outline" style="height: 3rem; padding: 0 2rem; font-size: 1rem;">
-          Documentation
+        <a href="/docs" class="btn btn-outline" style="height: 3.5rem; padding: 0 2.5rem; font-size: 1.1rem;">
+          <span id="btn-docs">Documentation</span>
         </a>
       </div>
     </main>
@@ -49,42 +51,102 @@
     <!-- Features -->
     <div class="grid-cols-3 mb-8">
       <div class="card">
-        <i data-lucide="shield-check" style="color: var(--primary); margin-bottom: 0.5rem"></i>
-        <h3>Anti-Bot Evasion</h3>
-        <p style="font-size: 0.875rem; margin-bottom:0">Smart header rotation and cookie handling to bypass 403 blocks.</p>
+        <i data-lucide="shield-check" style="color: var(--primary); margin-bottom: 0.75rem; width: 32px; height: 32px;"></i>
+        <h3 id="feat1-title">Anti-Bot Evasion</h3>
+        <p id="feat1-desc">Smart header rotation and cookie handling to bypass 403 blocks.</p>
       </div>
       <div class="card">
-        <i data-lucide="database" style="color: var(--primary); margin-bottom: 0.5rem"></i>
-        <h3>Hidden JSON Data</h3>
-        <p style="font-size: 0.875rem; margin-bottom:0">Extracts <code>__NEXT_DATA__</code> and JSON-LD from modern SPAs (Wildberries, Ozon).</p>
+        <i data-lucide="database" style="color: var(--primary); margin-bottom: 0.75rem; width: 32px; height: 32px;"></i>
+        <h3 id="feat2-title">Hidden JSON Data</h3>
+        <p id="feat2-desc">Extracts <code>__NEXT_DATA__</code> and JSON-LD from modern SPAs (Wildberries, Ozon).</p>
       </div>
       <div class="card">
-        <i data-lucide="zap" style="color: var(--primary); margin-bottom: 0.5rem"></i>
-        <h3>Blazing Fast</h3>
-        <p style="font-size: 0.875rem; margin-bottom:0">Powered by Bun runtime on Vercel Edge functions.</p>
+        <i data-lucide="zap" style="color: var(--primary); margin-bottom: 0.75rem; width: 32px; height: 32px;"></i>
+        <h3 id="feat3-title">Blazing Fast</h3>
+        <p id="feat3-desc">Powered by Bun runtime on Vercel Edge functions.</p>
       </div>
     </div>
 
     <!-- Footer -->
-    <footer style="text-align: center; padding: 2rem 0; border-top: 1px solid var(--border); margin-top: 4rem;">
+    <footer style="text-align: center; padding: 3rem 0; border-top: 1px solid var(--border); margin-top: 4rem; opacity: 0.8;">
       <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Faasm3535%2Ffirescrape" target="_blank" style="text-decoration:none;">
          <img src="https://vercel.com/button" alt="Deploy with Vercel" height="32" />
       </a>
-      <p style="font-size: 0.875rem; margin-top: 1rem;">MIT License © 2025 FireScrape</p>
+      <p style="font-size: 0.875rem; margin-top: 1.5rem;">MIT License © 2025 FireScrape</p>
     </footer>
   </div>
 
   <script>
     lucide.createIcons();
+
+    // --- I18n Data ---
+    const i18n = {
+      en: {
+        title: 'Scrape the web <span style="color: var(--primary)">without limits</span>.',
+        desc: 'A serverless API built on Bun. Bypasses bot detection, handles CAPTCHA challenges, and extracts structured data instantly.',
+        btnPlay: 'Open Playground',
+        btnDocs: 'Documentation',
+        feat1t: 'Anti-Bot Evasion', feat1d: 'Smart header rotation and cookie handling to bypass 403 blocks.',
+        feat2t: 'Hidden JSON Data', feat2d: 'Extracts __NEXT_DATA__ and JSON-LD from modern SPAs (Wildberries, Ozon).',
+        feat3t: 'Blazing Fast', feat3d: 'Powered by Bun runtime on Vercel Edge functions.'
+      },
+      ru: {
+        title: 'Парсинг веба <span style="color: var(--primary)">без границ</span>.',
+        desc: 'Серверлесс API на базе Bun. Обходит защиту от ботов, решает капчи и мгновенно извлекает структурированные данные.',
+        btnPlay: 'Открыть Песочницу',
+        btnDocs: 'Документация',
+        feat1t: 'Обход Защиты', feat1d: 'Умная ротация заголовков и куки для обхода блокировок 403.',
+        feat2t: 'Скрытые JSON Данные', feat2d: 'Извлекает __NEXT_DATA__ и JSON-LD из современных SPA (Wildberries, Ozon).',
+        feat3t: 'Молниеносно Быстро', feat3d: 'Работает на Bun в среде Vercel Edge functions.'
+      },
+      es: {
+        title: 'Raspa la web <span style="color: var(--primary)">sin límites</span>.',
+        desc: 'API sin servidor construida en Bun. Evita la detección de bots y extrae datos estructurados al instante.',
+        btnPlay: 'Abrir Playground',
+        btnDocs: 'Documentación',
+        feat1t: 'Evasión de Bots', feat1d: 'Rotación inteligente de cabeceras para evitar bloqueos 403.',
+        feat2t: 'Datos JSON Ocultos', feat2d: 'Extrae __NEXT_DATA__ y JSON-LD de SPAs modernas.',
+        feat3t: 'Increíblemente Rápido', feat3d: 'Impulsado por el tiempo de ejecución Bun.'
+      },
+      zh: {
+        title: '无限制地 <span style="color: var(--primary)">抓取网络</span>。',
+        desc: '基于 Bun 构建的无服务器 API。绕过机器人检测，处理验证码，并即时提取结构化数据。',
+        btnPlay: '打开演练场',
+        btnDocs: '文档',
+        feat1t: '反机器人规避', feat1d: '智能标头轮换和 cookie 处理以绕过 403 封锁。',
+        feat2t: '隐藏的 JSON 数据', feat2d: '从现代 SPA 中提取 __NEXT_DATA__ 和 JSON-LD。',
+        feat3t: '极速', feat3d: '由 Vercel Edge functions 上的 Bun 运行时提供支持。'
+      }
+    };
+
+    // --- Auto Detect Lang ---
+    const userLang = (navigator.language || navigator.userLanguage || 'en').substring(0, 2).toLowerCase();
+    const t = i18n[userLang] || i18n['en'];
+
+    // Apply Text
+    document.getElementById('hero-title').innerHTML = t.title;
+    document.getElementById('hero-desc').innerText = t.desc;
+    document.getElementById('btn-play').innerText = t.btnPlay;
+    document.getElementById('btn-docs').innerText = t.btnDocs;
+    
+    document.getElementById('feat1-title').innerText = t.feat1t;
+    document.getElementById('feat1-desc').innerText = t.feat1d;
+    document.getElementById('feat2-title').innerText = t.feat2t;
+    document.getElementById('feat2-desc').innerText = t.feat2d;
+    document.getElementById('feat3-title').innerText = t.feat3t;
+    document.getElementById('feat3-desc').innerText = t.feat3d;
+
+    // --- Theme Logic ---
     function toggleTheme() {
       document.body.classList.toggle('dark');
       const isDark = document.body.classList.contains('dark');
       document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
       lucide.createIcons();
     }
-    // Auto-detect system theme
+    
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      toggleTheme();
+      document.body.classList.add('dark');
+      document.getElementById('theme-icon').setAttribute('data-lucide', 'sun');
     }
   </script>
 </body>

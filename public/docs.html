@@ -13,7 +13,7 @@
     /* Custom Sidebar */
     .docs-sidebar {
       width: 280px;
-      background: var(--card); /* Keeps it white in light mode, dark in dark mode */
+      background: var(--card);
       border-right: 1px solid var(--border);
       padding: 2rem 1rem;
       overflow-y: auto;
@@ -21,86 +21,29 @@
       flex-direction: column;
       flex-shrink: 0;
     }
-
-    /* Custom Scrollbar for Sidebar */
-    .docs-sidebar::-webkit-scrollbar { width: 5px; }
-    .docs-sidebar::-webkit-scrollbar-track { background: transparent; }
-    .docs-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-    .docs-sidebar::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
     
     .docs-nav-group { margin-bottom: 2rem; padding: 0 0.5rem; }
-    .docs-nav-title { 
-      font-size: 0.75rem; 
-      font-weight: 700; 
-      text-transform: uppercase; 
-      color: var(--muted-foreground); 
-      margin-bottom: 0.75rem; 
-      letter-spacing: 0.05em;
-      padding-left: 0.75rem;
-    }
+    .docs-nav-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.75rem; letter-spacing: 0.05em; padding-left: 0.75rem; }
     
     .docs-link {
-      display: flex;
-      align-items: center;
-      color: var(--muted-foreground);
-      text-decoration: none;
-      padding: 0.5rem 0.75rem;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-      border-radius: var(--radius);
-      margin-bottom: 2px;
-      font-weight: 500;
+      display: flex; align-items: center; color: var(--muted-foreground); text-decoration: none; padding: 0.5rem 0.75rem; font-size: 0.9rem; transition: all 0.2s; border-radius: var(--radius); margin-bottom: 2px; font-weight: 500;
     }
-    
-    .docs-link:hover { 
-      color: var(--foreground);
-      background-color: var(--secondary);
-    }
-    
-    .docs-link.active { 
-      color: var(--primary); 
-      background-color: rgba(234, 88, 12, 0.08); /* Light orange tint */
-      font-weight: 600;
-    }
+    .docs-link:hover { color: var(--foreground); background-color: var(--secondary); }
+    .docs-link.active { color: var(--primary); background-color: rgba(234, 88, 12, 0.08); font-weight: 600; }
     
     /* Main Content */
-    .docs-main {
-      flex: 1;
-      padding: 3rem 5rem;
-      overflow-y: auto;
-      max-width: 1000px;
-      scroll-behavior: smooth;
-    }
+    .docs-main { flex: 1; padding: 3rem 5rem; overflow-y: auto; max-width: 1000px; scroll-behavior: smooth; }
 
     /* Typography Overrides */
     .docs-main h1 { font-size: 2.5rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); letter-spacing: -0.02em; }
     .docs-main h2 { font-size: 1.75rem; margin-top: 3rem; margin-bottom: 1.5rem; letter-spacing: -0.01em; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
     .docs-main h3 { font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--foreground); }
     .docs-main p { line-height: 1.8; margin-bottom: 1.5rem; color: var(--muted-foreground); }
-    .docs-main code { 
-      background: var(--secondary); 
-      padding: 0.2rem 0.4rem; 
-      border-radius: 4px; 
-      font-family: 'Menlo', monospace; 
-      font-size: 0.85em; 
-      color: var(--primary);
-      border: 1px solid var(--border);
-    }
+    .docs-main code { background: var(--secondary); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: 'Menlo', monospace; font-size: 0.85em; color: var(--primary); border: 1px solid var(--border); }
     
     /* Endpoint Badge */
-    .endpoint {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      background: var(--card);
-      padding: 1rem;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      font-family: 'Menlo', monospace;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-    .method { font-weight: 700; color: #16a34a; background: #dcfce7; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; } /* GET is green */
+    .endpoint { display: flex; align-items: center; gap: 1rem; background: var(--card); padding: 1rem; border-radius: var(--radius); border: 1px solid var(--border); font-family: 'Menlo', monospace; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm); }
+    .method { font-weight: 700; color: #16a34a; background: #dcfce7; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; }
     .dark .method { background: #052e16; color: #4ade80; }
 
     /* Tables */
@@ -109,10 +52,7 @@
     th { background: var(--secondary); color: var(--foreground); font-weight: 600; }
     tr:last-child td { border-bottom: none; }
 
-    @media (max-width: 1024px) {
-      .docs-main { padding: 2rem; }
-    }
-
+    @media (max-width: 1024px) { .docs-main { padding: 2rem; } }
     @media (max-width: 768px) {
       .docs-layout { flex-direction: column; }
       .docs-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); height: auto; padding: 1rem; overflow-x: auto; flex-direction: row; gap: 2rem; align-items: center; }
@@ -126,7 +66,7 @@
 </head>
 <body class="light">
 
-  <nav class="navbar" style="padding: 1rem 1.5rem; margin: 0; border-bottom: 1px solid var(--border); background: var(--card); z-index: 10;">
+  <nav class="navbar" style="padding: 1rem 1.5rem; margin: 0; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.8); backdrop-filter: blur(12px); z-index: 10;">
     <a href="/" class="logo">
       <i data-lucide="flame" style="color: var(--primary)"></i>
       FireScrape <span style="font-weight: 400; color: var(--muted-foreground); margin-left: 8px; font-size: 0.9em; border: 1px solid var(--border); padding: 2px 8px; border-radius: 99px; font-size: 0.75rem;">Docs</span>
@@ -161,7 +101,6 @@
     </aside>
 
     <main class="docs-main">
-      
       <section id="introduction">
         <h1>Introduction</h1>
         <p>FireScrape is a <b>serverless-first</b> web scraping API designed for modern frontend developers. Unlike traditional scrapers, FireScrape handles the complexity of headless browsers, user-agent rotation, and CAPTCHA detection under the hood.</p>
@@ -261,10 +200,8 @@
   <script>
     lucide.createIcons();
     
-    // Smooth scroll & Active link handler
     document.querySelectorAll('.docs-link').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
-        // Only prevent default for internal hash links
         if (this.getAttribute('href').startsWith('#')) {
           e.preventDefault();
           document.querySelectorAll('.docs-link').forEach(l => l.classList.remove('active'));
@@ -280,11 +217,14 @@
       const isDark = document.body.classList.contains('dark');
       document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
       lucide.createIcons();
+      // Sync navbar bg for docs specifically
+      document.querySelector('.navbar').style.background = isDark ? 'rgba(9, 9, 11, 0.8)' : 'rgba(255,255,255,0.8)';
     }
     
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.body.classList.add('dark');
       document.getElementById('theme-icon').setAttribute('data-lucide', 'sun');
+      document.querySelector('.navbar').style.background = 'rgba(9, 9, 11, 0.8)';
     }
   </script>
 </body>
