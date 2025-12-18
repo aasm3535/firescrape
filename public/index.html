@@ -3,115 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FireScrape</title>
+  <title>FireScrape 🔥</title>
   <link rel="stylesheet" href="/style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="light">
 
   <div class="container">
-    <nav>
+    <!-- Navbar -->
+    <nav class="navbar">
       <a href="/" class="logo">
         <i data-lucide="flame" style="color: var(--primary)"></i>
         FireScrape
       </a>
-      <div class="nav-links">
-        <a href="https://github.com/aasm3535/firescrape" target="_blank" class="btn btn-outline btn-sm">
-          <i data-lucide="github" style="width: 16px; margin-right: 6px;"></i>
-          GitHub
+      <div class="flex gap-2">
+        <a href="https://github.com/aasm3535/firescrape" target="_blank" class="btn btn-outline">
+          <i data-lucide="github" style="width:16px; margin-right:6px"></i> GitHub
         </a>
-        <button onclick="toggleTheme()" class="btn btn-ghost btn-sm">
-          <i data-lucide="moon" id="theme-icon" style="width: 16px;"></i>
+        <button onclick="toggleTheme()" class="btn btn-ghost">
+          <i data-lucide="moon" id="theme-icon" style="width:16px;"></i>
         </button>
       </div>
     </nav>
 
     <!-- Hero -->
-    <section class="hero">
-      <div class="badge" style="margin-bottom: 1rem;">v2.0 Beta</div>
+    <main class="flex flex-col items-center justify-center" style="padding: 4rem 0; text-align: center;">
+      <div class="btn btn-outline" style="height:auto; padding: 4px 12px; font-size: 0.75rem; border-radius: 99px; margin-bottom: 1rem;">
+        v2.0 Beta
+      </div>
       <h1>Scrape the web <span style="color: var(--primary)">without limits</span>.</h1>
-      <p>
-        A serverless API designed to bypass bot detection. Extract metadata, JSON-LD, and search results instantly.
+      <p style="max-width: 600px; font-size: 1.125rem;">
+        A serverless API built on Bun. Bypasses bot detection, handles CAPTCHA challenges, and extracts structured data instantly.
       </p>
       
-      <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 3rem;">
+      <div class="flex gap-4 mt-4">
         <a href="/playground" class="btn btn-primary" style="height: 3rem; padding: 0 2rem; font-size: 1rem;">
-          <i data-lucide="flask-conical" style="width: 20px; margin-right: 8px;"></i>
-          Open Playground
+          <i data-lucide="play" style="width:18px; margin-right:8px"></i> Open Playground
         </a>
-        <a href="#docs" class="btn btn-outline" style="height: 3rem; padding: 0 2rem; font-size: 1rem;">Documentation</a>
+        <a href="#docs" class="btn btn-outline" style="height: 3rem; padding: 0 2rem; font-size: 1rem;">
+          Documentation
+        </a>
       </div>
-
-      <!-- Mini Demo Image / Visual -->
-      <div style="border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; background: var(--secondary); max-width: 600px; margin: 0 auto; opacity: 0.8;">
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-          <div style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444;"></div>
-          <div style="width: 10px; height: 10px; border-radius: 50%; background: #eab308;"></div>
-          <div style="width: 10px; height: 10px; border-radius: 50%; background: #22c55e;"></div>
-        </div>
-        <div style="font-family: monospace; color: var(--muted-foreground); text-align: left; font-size: 0.875rem;">
-          > GET /api/scrape?url=https://wildberries.ru...<br>
-          <span style="color: #16a34a">200 OK</span><br>
-          { "title": "Wildberries", "price": 1200 ... }
-        </div>
-      </div>
-    </section>
+    </main>
 
     <!-- Features -->
-    <section class="grid" style="margin-top: 4rem;">
+    <div class="grid-cols-3 mb-8">
       <div class="card">
-        <i data-lucide="shield-check" style="color: var(--primary); margin-bottom: 1rem;"></i>
-        <h3 style="margin-top:0">Evasion Logic</h3>
-        <p style="font-size: 0.875rem;">Mimics real browser headers to bypass 403 blocks and detects CAPTCHA pages to prevent garbage data.</p>
+        <i data-lucide="shield-check" style="color: var(--primary); margin-bottom: 0.5rem"></i>
+        <h3>Anti-Bot Evasion</h3>
+        <p style="font-size: 0.875rem; margin-bottom:0">Smart header rotation and cookie handling to bypass 403 blocks.</p>
       </div>
       <div class="card">
-        <i data-lucide="code-2" style="color: var(--primary); margin-bottom: 1rem;"></i>
-        <h3 style="margin-top:0">JSON-LD Extraction</h3>
-        <p style="font-size: 0.875rem;">Automatically extracts structured data (products, articles) even from complex sites.</p>
+        <i data-lucide="database" style="color: var(--primary); margin-bottom: 0.5rem"></i>
+        <h3>Hidden JSON Data</h3>
+        <p style="font-size: 0.875rem; margin-bottom:0">Extracts <code>__NEXT_DATA__</code> and JSON-LD from modern SPAs (Wildberries, Ozon).</p>
       </div>
       <div class="card">
-        <i data-lucide="zap" style="color: var(--primary); margin-bottom: 1rem;"></i>
-        <h3 style="margin-top:0">Fast & Serverless</h3>
-        <p style="font-size: 0.875rem;">Optimized for Vercel/Bun. No heavy browser overhead, just pure speed.</p>
+        <i data-lucide="zap" style="color: var(--primary); margin-bottom: 0.5rem"></i>
+        <h3>Blazing Fast</h3>
+        <p style="font-size: 0.875rem; margin-bottom:0">Powered by Bun runtime on Vercel Edge functions.</p>
       </div>
-    </section>
-
-    <!-- Docs -->
-    <section id="docs" style="margin-bottom: 4rem;">
-      <h2>API Reference</h2>
-      <div class="card">
-        <h3 style="font-family: monospace;">GET /api/scrape</h3>
-        <p>Params: <code>?url=https://...</code></p>
-        <pre><span class="key">"data"</span>: {
-  <span class="key">"title"</span>: <span class="string">"Product Name"</span>,
-  <span class="key">"json_ld"</span>: [{ <span class="key">"@type"</span>: <span class="string">"Product"</span>, <span class="key">"price"</span>: <span class="number">100</span> }]
-}</pre>
-      </div>
-    </section>
-
-    <div class="footer">
-      <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Faasm3535%2Ffirescrape" target="_blank" style="text-decoration: none;">
-        <img src="https://vercel.com/button" alt="Deploy with Vercel" height="32" />
-      </a>
-      <p style="margin-top: 1rem; font-size: 0.875rem;">Designed with ❤️ for Builders</p>
     </div>
 
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 2rem 0; border-top: 1px solid var(--border); margin-top: 4rem;">
+      <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Faasm3535%2Ffirescrape" target="_blank" style="text-decoration:none;">
+         <img src="https://vercel.com/button" alt="Deploy with Vercel" height="32" />
+      </a>
+      <p style="font-size: 0.875rem; margin-top: 1rem;">MIT License © 2025 FireScrape</p>
+    </footer>
   </div>
 
   <script>
     lucide.createIcons();
-    
     function toggleTheme() {
-      const body = document.body;
-      const icon = document.getElementById('theme-icon');
-      if (body.classList.contains('dark')) {
-        body.classList.remove('dark');
-        icon.setAttribute('data-lucide', 'moon');
-      } else {
-        body.classList.add('dark');
-        icon.setAttribute('data-lucide', 'sun');
-      }
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
       lucide.createIcons();
+    }
+    // Auto-detect system theme
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      toggleTheme();
     }
   </script>
 </body>
