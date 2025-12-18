@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FireScrape 🔥 API</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <a href="/" class="logo">🔥 FireScrape</a>
+      <div class="controls">
+        <button class="lang-btn" onclick="toggleLang('en')">EN</button>
+        <button class="lang-btn" onclick="toggleLang('ru')">RU</button>
+      </div>
+    </header>
+
+    <div class="hero">
+      <h1 data-lang="en">The Ultimate Scraper API</h1>
+      <h1 data-lang="ru">Лучший API для скрапинга</h1>
+      
+      <p data-lang="en">Simple, powerful, and free from browser checks. Built for Vercel.</p>
+      <p data-lang="ru">Простой, мощный и обходящий проверки браузера. Создан для Vercel.</p>
+
+      <div style="margin-top: 2rem;">
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Faasm3535%2Ffirescrape" target="_blank">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+        </a>
+      </div>
+    </div>
+
+    <!-- Playground Section -->
+    <h2 data-lang="en">⚡ Try it Live</h2>
+    <h2 data-lang="ru">⚡ Живой тест</h2>
+
+    <div class="card">
+      <div style="margin-bottom: 1rem;">
+        <label>
+          <input type="radio" name="mode" value="scrape" checked onclick="setMode('scrape')">
+          <span data-lang="en">Scrape Site</span><span data-lang="ru">Парсинг сайта</span>
+        </label>
+        <label style="margin-left: 1rem;">
+          <input type="radio" name="mode" value="search" onclick="setMode('search')">
+          <span data-lang="en">Search Web</span><span data-lang="ru">Поиск в сети</span>
+        </label>
+      </div>
+
+      <input type="text" id="inputField" placeholder="https://example.com">
+      <button class="btn" onclick="executeApi()" data-lang="en">Fire Request 🔥</button>
+      <button class="btn" onclick="executeApi()" data-lang="ru">Отправить 🔥</button>
+
+      <pre id="output" class="response-area" style="display:none;">Waiting for response...</pre>
+    </div>
+
+    <!-- Documentation Section -->
+    <h2 data-lang="en">📚 Documentation</h2>
+    <h2 data-lang="ru">📚 Документация</h2>
+
+    <div class="card">
+      <h3>1. /api/scrape</h3>
+      <p data-lang="en">Extracts metadata and text content from any URL. Bypasses basic bot protection by mimicking a real browser.</p>
+      <p data-lang="ru">Извлекает метаданные и текст с любого URL. Обходит базовую защиту от ботов, имитируя реальный браузер.</p>
+      
+      <pre>GET /api/scrape?url=https://example.com</pre>
+      
+      <h4 data-lang="en">Response Example:</h4>
+      <h4 data-lang="ru">Пример ответа:</h4>
+      <pre>{
+  "success": true,
+  "data": {
+    "title": "Example Domain",
+    "description": "...",
+    "content": "Example Domain This domain is for..."
+  }
+}</pre>
+    </div>
+
+    <div class="card">
+      <h3>2. /api/search</h3>
+      <p data-lang="en">Performs a web search (DuckDuckGo style) and returns clean JSON results.</p>
+      <p data-lang="ru">Выполняет поиск в интернете (в стиле DuckDuckGo) и возвращает чистый JSON.</p>
+      
+      <pre>GET /api/search?q=hello+world</pre>
+    </div>
+
+    <div class="footer">
+      <p>
+        <a href="https://github.com/aasm3535/firescrape" target="_blank" style="color: inherit; text-decoration: none;">
+          GitHub: aasm3535/firescrape
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let currentMode = 'scrape';
+
+    // Set initial lang based on system
+    const userLang = navigator.language || navigator.userLanguage;
+    if (userLang.startsWith('ru')) {
+      document.body.classList.add('lang-ru');
+    }
+
+    function toggleLang(lang) {
+      if (lang === 'ru') {
+        document.body.classList.add('lang-ru');
+      } else {
+        document.body.classList.remove('lang-ru');
+      }
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      const input = document.getElementById('inputField');
+      if (mode === 'scrape') {
+        input.placeholder = "https://example.com";
+      } else {
+        input.placeholder = "Hello world";
+      }
+    }
+
+    async function executeApi() {
+      const input = document.getElementById('inputField').value;
+      const output = document.getElementById('output');
+      
+      if (!input) return;
+
+      output.style.display = 'block';
+      output.innerText = 'Loading... 🔥';
+
+      let endpoint = '';
+      if (currentMode === 'scrape') {
+        endpoint = `/api/scrape?url=${encodeURIComponent(input)}`;
+      } else {
+        endpoint = `/api/search?q=${encodeURIComponent(input)}`;
+      }
+
+      try {
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        output.innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.innerText = 'Error: ' + err.message;
+      }
+    }
+  </script>
+</body>
+</html>

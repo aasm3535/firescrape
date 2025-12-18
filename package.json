@@ -1,8 +1,16 @@
 {
-  "name": "express",
+  "name": "firescrape",
+  "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "start": "bun src/index.ts",
+    "dev": "bun --watch src/index.ts"
+  },
   "dependencies": {
-    "express": "5.1.0"
+    "axios": "^1.13.2",
+    "cheerio": "^1.1.2",
+    "express": "5.1.0",
+    "user-agents": "^1.1.669"
   },
   "devDependencies": {
     "@types/express": "5.0.0",
