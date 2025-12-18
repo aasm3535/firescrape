@@ -7,21 +7,28 @@
   <link rel="stylesheet" href="/style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: var(--background); }
     .docs-layout { display: flex; flex: 1; overflow: hidden; }
     
-    /* Sidebar */
+    /* Custom Sidebar */
     .docs-sidebar {
-      width: 250px;
-      background: var(--card);
+      width: 280px;
+      background: var(--card); /* Keeps it white in light mode, dark in dark mode */
       border-right: 1px solid var(--border);
-      padding: 2rem 1.5rem;
+      padding: 2rem 1rem;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
+      flex-shrink: 0;
     }
+
+    /* Custom Scrollbar for Sidebar */
+    .docs-sidebar::-webkit-scrollbar { width: 5px; }
+    .docs-sidebar::-webkit-scrollbar-track { background: transparent; }
+    .docs-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    .docs-sidebar::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
     
-    .docs-nav-group { margin-bottom: 2rem; }
+    .docs-nav-group { margin-bottom: 2rem; padding: 0 0.5rem; }
     .docs-nav-title { 
       font-size: 0.75rem; 
       font-weight: 700; 
@@ -29,31 +36,47 @@
       color: var(--muted-foreground); 
       margin-bottom: 0.75rem; 
       letter-spacing: 0.05em;
+      padding-left: 0.75rem;
     }
     
     .docs-link {
-      display: block;
-      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      color: var(--muted-foreground);
       text-decoration: none;
-      padding: 0.4rem 0;
+      padding: 0.5rem 0.75rem;
       font-size: 0.9rem;
-      transition: color 0.2s;
+      transition: all 0.2s;
+      border-radius: var(--radius);
+      margin-bottom: 2px;
+      font-weight: 500;
     }
-    .docs-link:hover, .docs-link.active { color: var(--primary); font-weight: 500; }
+    
+    .docs-link:hover { 
+      color: var(--foreground);
+      background-color: var(--secondary);
+    }
+    
+    .docs-link.active { 
+      color: var(--primary); 
+      background-color: rgba(234, 88, 12, 0.08); /* Light orange tint */
+      font-weight: 600;
+    }
     
     /* Main Content */
     .docs-main {
       flex: 1;
-      padding: 2rem 4rem;
+      padding: 3rem 5rem;
       overflow-y: auto;
-      max-width: 900px;
+      max-width: 1000px;
+      scroll-behavior: smooth;
     }
 
     /* Typography Overrides */
-    .docs-main h1 { font-size: 2.25rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-    .docs-main h2 { font-size: 1.5rem; margin-top: 2.5rem; margin-bottom: 1rem; }
-    .docs-main h3 { font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
-    .docs-main p { line-height: 1.7; margin-bottom: 1rem; }
+    .docs-main h1 { font-size: 2.5rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); letter-spacing: -0.02em; }
+    .docs-main h2 { font-size: 1.75rem; margin-top: 3rem; margin-bottom: 1.5rem; letter-spacing: -0.01em; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    .docs-main h3 { font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--foreground); }
+    .docs-main p { line-height: 1.8; margin-bottom: 1.5rem; color: var(--muted-foreground); }
     .docs-main code { 
       background: var(--secondary); 
       padding: 0.2rem 0.4rem; 
@@ -61,6 +84,7 @@
       font-family: 'Menlo', monospace; 
       font-size: 0.85em; 
       color: var(--primary);
+      border: 1px solid var(--border);
     }
     
     /* Endpoint Badge */
@@ -68,22 +92,33 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      background: var(--secondary);
-      padding: 0.75rem;
+      background: var(--card);
+      padding: 1rem;
       border-radius: var(--radius);
       border: 1px solid var(--border);
       font-family: 'Menlo', monospace;
       margin-bottom: 1.5rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
-    .method { font-weight: 700; color: #16a34a; } /* GET is green */
-    
-    table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.9rem; }
-    th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); }
-    th { color: var(--muted-foreground); font-weight: 500; }
+    .method { font-weight: 700; color: #16a34a; background: #dcfce7; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; } /* GET is green */
+    .dark .method { background: #052e16; color: #4ade80; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 2rem; font-size: 0.9rem; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    th, td { text-align: left; padding: 1rem; border-bottom: 1px solid var(--border); }
+    th { background: var(--secondary); color: var(--foreground); font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+
+    @media (max-width: 1024px) {
+      .docs-main { padding: 2rem; }
+    }
 
     @media (max-width: 768px) {
       .docs-layout { flex-direction: column; }
-      .docs-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); height: auto; padding: 1rem; }
+      .docs-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); height: auto; padding: 1rem; overflow-x: auto; flex-direction: row; gap: 2rem; align-items: center; }
+      .docs-nav-group { margin-bottom: 0; }
+      .docs-nav-title { display: none; }
+      .docs-link { white-space: nowrap; }
       .docs-main { padding: 1.5rem; }
       body { height: auto; overflow: auto; }
     }
@@ -91,10 +126,10 @@
 </head>
 <body class="light">
 
-  <nav class="navbar" style="padding: 1rem 1.5rem; margin: 0; border-bottom: 1px solid var(--border);">
+  <nav class="navbar" style="padding: 1rem 1.5rem; margin: 0; border-bottom: 1px solid var(--border); background: var(--card); z-index: 10;">
     <a href="/" class="logo">
       <i data-lucide="flame" style="color: var(--primary)"></i>
-      FireScrape <span style="font-weight: 400; color: var(--muted-foreground); margin-left: 8px;">Docs</span>
+      FireScrape <span style="font-weight: 400; color: var(--muted-foreground); margin-left: 8px; font-size: 0.9em; border: 1px solid var(--border); padding: 2px 8px; border-radius: 99px; font-size: 0.75rem;">Docs</span>
     </a>
     <div class="flex gap-2">
       <a href="/playground" class="btn btn-primary btn-sm" style="font-size: 0.8rem; height: 2rem;">Playground</a>
@@ -105,20 +140,23 @@
   <div class="docs-layout">
     <aside class="docs-sidebar">
       <div class="docs-nav-group">
-        <div class="docs-nav-title">Introduction</div>
-        <a href="#introduction" class="docs-link active">Getting Started</a>
+        <div class="docs-nav-title">Start Here</div>
+        <a href="#introduction" class="docs-link active">Introduction</a>
         <a href="#authentication" class="docs-link">Authentication</a>
       </div>
       
       <div class="docs-nav-group">
-        <div class="docs-nav-title">Endpoints</div>
-        <a href="#scrape" class="docs-link">/api/scrape</a>
-        <a href="#search" class="docs-link">/api/search</a>
+        <div class="docs-nav-title">API Reference</div>
+        <a href="#scrape" class="docs-link">Scrape Endpoint</a>
+        <a href="#search" class="docs-link">Search Endpoint</a>
       </div>
 
       <div class="docs-nav-group">
-        <div class="docs-nav-title">Errors</div>
-        <a href="#errors" class="docs-link">Error Codes</a>
+        <div class="docs-nav-title">Guides</div>
+        <a href="#errors" class="docs-link">Handling Errors</a>
+        <a href="https://github.com/aasm3535/firescrape" target="_blank" class="docs-link">
+          GitHub Repo <i data-lucide="external-link" width="12" style="margin-left: auto;"></i>
+        </a>
       </div>
     </aside>
 
@@ -126,100 +164,96 @@
       
       <section id="introduction">
         <h1>Introduction</h1>
-        <p>FireScrape is a serverless-ready API built to simplify web scraping. It handles the complexity of headless browsers, user-agent rotation, and CAPTCHA detection, returning clean JSON data.</p>
-        <p>Base URL: <code>https://your-project.vercel.app</code></p>
+        <p>FireScrape is a <b>serverless-first</b> web scraping API designed for modern frontend developers. Unlike traditional scrapers, FireScrape handles the complexity of headless browsers, user-agent rotation, and CAPTCHA detection under the hood.</p>
+        <p>It is built to run on edge networks (like Vercel) with minimal latency.</p>
+        
+        <div style="background: var(--secondary); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border); margin: 2rem 0;">
+          <h3 style="margin-top:0">Base URL</h3>
+          <p style="margin-bottom:0; font-family: monospace; color: var(--primary);">https://firescrape-plum.vercel.app</p>
+        </div>
       </section>
 
       <section id="authentication">
         <h2>Authentication</h2>
-        <p>Currently, the API is open and does not require an API key for basic usage. Rate limits apply based on the hosting provider (Vercel).</p>
+        <p>The API is currently open for public use in beta. No API key is required. However, we enforce rate limits per IP address to ensure fair usage.</p>
       </section>
 
       <section id="scrape">
-        <h2>Scrape URL</h2>
-        <p>Extracts metadata, content, and structured data (JSON-LD) from a webpage.</p>
+        <h2>Scrape Endpoint</h2>
+        <p>Use this endpoint to extract metadata, main content, and hidden structured data (JSON-LD) from any public URL.</p>
         
         <div class="endpoint">
           <span class="method">GET</span>
           <span>/api/scrape</span>
         </div>
 
-        <h3>Parameters</h3>
+        <h3>Query Parameters</h3>
         <table>
-          <thead><tr><th>Param</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
           <tbody>
             <tr>
               <td><code>url</code></td>
-              <td>string</td>
+              <td><code style="color: var(--primary)">string</code></td>
               <td>Yes</td>
-              <td>The target URL to scrape (e.g., https://example.com).</td>
+              <td>The target URL to scrape. Must be URL-encoded.</td>
             </tr>
           </tbody>
         </table>
 
-        <h3>Response</h3>
+        <h3>Response Object</h3>
         <pre><span class="key">"success"</span>: <span class="boolean">true</span>,
 <span class="key">"data"</span>: {
   <span class="key">"url"</span>: <span class="string">"https://example.com"</span>,
   <span class="key">"meta"</span>: {
-    <span class="key">"title"</span>: <span class="string">"Example Domain"</span>,
-    <span class="key">"description"</span>: <span class="string">"..."</span>
+    <span class="key">"title"</span>: <span class="string">"Page Title"</span>,
+    <span class="key">"description"</span>: <span class="string">"SEO Description..."</span>
   },
-  <span class="key">"structured_data"</span>: [ ... ], <span class="string">// JSON-LD or Next.js data</span>
-  <span class="key">"content_preview"</span>: <span class="string">"Full text content..."</span>
+  <span class="key">"structured_data"</span>: [ ... ], <span class="string">// Extracted JSON-LD / Next.js data</span>
+  <span class="key">"content_preview"</span>: <span class="string">"Clean text content..."</span>
 }</pre>
       </section>
 
       <section id="search">
-        <h2>Web Search</h2>
-        <p>Performs a privacy-friendly web search (via DuckDuckGo) and returns results in JSON.</p>
+        <h2>Search Endpoint</h2>
+        <p>Perform a privacy-friendly web search without tracking. Results are returned in clean JSON format, ideal for AI agents or research tools.</p>
 
         <div class="endpoint">
           <span class="method">GET</span>
           <span>/api/search</span>
         </div>
 
-        <h3>Parameters</h3>
+        <h3>Query Parameters</h3>
         <table>
-          <thead><tr><th>Param</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
           <tbody>
             <tr>
               <td><code>q</code></td>
-              <td>string</td>
+              <td><code style="color: var(--primary)">string</code></td>
               <td>Yes</td>
-              <td>The search query (e.g., "bun js").</td>
+              <td>The search query (e.g. "latest tech news").</td>
             </tr>
           </tbody>
         </table>
-
-        <h3>Response</h3>
-        <pre><span class="key">"success"</span>: <span class="boolean">true</span>,
-<span class="key">"results"</span>: [
-  {
-    <span class="key">"title"</span>: <span class="string">"Bun — A fast all-in-one JavaScript runtime"</span>,
-    <span class="key">"link"</span>: <span class="string">"https://bun.sh/"</span>,
-    <span class="key">"snippet"</span>: <span class="string">"Bun is a fast..."</span>
-  }
-]</pre>
       </section>
 
       <section id="errors">
-        <h2>Errors</h2>
-        <p>The API uses standard HTTP status codes to indicate success or failure.</p>
+        <h2>Handling Errors</h2>
+        <p>FireScrape uses standard HTTP status codes.</p>
         <table>
-          <thead><tr><th>Code</th><th>Meaning</th><th>Description</th></tr></thead>
+          <thead><tr><th>Code</th><th>Status</th><th>Meaning</th></tr></thead>
           <tbody>
-            <tr><td>200</td><td>OK</td><td>Request succeeded.</td></tr>
-            <tr><td>400</td><td>Bad Request</td><td>Missing parameters (e.g., no URL).</td></tr>
-            <tr><td>403</td><td>Forbidden</td><td>Target site blocked the scraper.</td></tr>
-            <tr><td>429</td><td>Too Many Requests</td><td>Target site detected a bot (CAPTCHA).</td></tr>
-            <tr><td>500</td><td>Internal Error</td><td>Server-side parsing error.</td></tr>
+            <tr><td>200</td><td>OK</td><td>Success.</td></tr>
+            <tr><td>400</td><td>Bad Request</td><td>Missing <code>url</code> or <code>q</code> parameter.</td></tr>
+            <tr><td>403</td><td>Forbidden</td><td>Target site has strict anti-bot (Akamai/Cloudflare).</td></tr>
+            <tr><td>429</td><td>Too Many Requests</td><td>CAPTCHA detected on target site.</td></tr>
+            <tr><td>500</td><td>Server Error</td><td>Internal parsing error.</td></tr>
           </tbody>
         </table>
       </section>
 
-      <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted-foreground); font-size: 0.85rem;">
-        FireScrape Documentation v2.0
+      <footer style="margin-top: 5rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted-foreground); font-size: 0.85rem; display: flex; justify-content: space-between;">
+        <span>© 2025 FireScrape</span>
+        <span>Documentation v2.0</span>
       </footer>
     </main>
   </div>
@@ -227,25 +261,30 @@
   <script>
     lucide.createIcons();
     
-    // Smooth scroll for sidebar
+    // Smooth scroll & Active link handler
     document.querySelectorAll('.docs-link').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelectorAll('.docs-link').forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-          behavior: 'smooth'
-        });
+        // Only prevent default for internal hash links
+        if (this.getAttribute('href').startsWith('#')) {
+          e.preventDefault();
+          document.querySelectorAll('.docs-link').forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+          const target = document.querySelector(this.getAttribute('href'));
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
       });
     });
 
     function toggleTheme() {
       document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
       lucide.createIcons();
     }
-    // Auto-detect
+    
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.body.classList.add('dark');
+      document.getElementById('theme-icon').setAttribute('data-lucide', 'sun');
     }
   </script>
 </body>
