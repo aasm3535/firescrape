@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FireScrape Playground</title>
-  <link rel="stylesheet" href="/style.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
+<style>
     /* Specific Playground Styles */
     body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
     .pg-layout { display: flex; flex: 1; height: calc(100vh - 65px); }
@@ -280,7 +272,7 @@
          json = JSON.stringify(json, undefined, 2);
       }
       json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      return json.replace(/("(\u[a-zA-Z0-9]{4}|\.[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+      return json.replace(/("(\u[a-zA-Z0-9]{4}|\.[^u]|[^\]")*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
         var cls = 'number';
         if (/^"/.test(match)) {
             if (/:$/.test(match)) {
