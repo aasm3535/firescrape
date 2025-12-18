@@ -49,6 +49,10 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: "Inter", sans-serif;
   background-color: var(--background);
@@ -71,7 +75,7 @@ nav {
   align-items: center;
   padding: 1rem 0;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 4rem;
+  margin-bottom: 2rem; /* Reduced margin */
 }
 
 .logo {
@@ -90,7 +94,7 @@ nav {
   align-items: center;
 }
 
-/* Buttons (Shadcn variants) */
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -191,20 +195,8 @@ p {
   margin-bottom: 4rem;
 }
 
-/* Playground */
-.playground {
-  max-width: 800px;
-  margin: 0 auto 5rem;
-}
-
-.input-group {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-input[type="text"] {
-  flex: 1;
+/* Form Elements */
+input[type="text"], .lang-select {
   height: 2.5rem;
   border-radius: var(--radius);
   border: 1px solid var(--input);
@@ -216,10 +208,11 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
-  ring: 2px var(--ring);
   border-color: var(--ring);
+  box-shadow: 0 0 0 1px var(--ring);
 }
 
+/* Tabs */
 .tabs {
   display: inline-flex;
   height: 2.5rem;
@@ -252,6 +245,7 @@ input[type="text"]:focus {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
+/* Code */
 pre {
   background-color: var(--secondary);
   padding: 1rem;
@@ -261,8 +255,6 @@ pre {
   color: var(--foreground);
   font-family: "Menlo", monospace;
   margin-top: 1rem;
-  max-height: 400px;
-  overflow-y: auto;
   border: 1px solid var(--border);
 }
 
@@ -270,7 +262,6 @@ pre {
   display: inline-flex;
   align-items: center;
   border-radius: 9999px;
-  border: 1px solid transparent;
   background-color: var(--primary);
   color: var(--primary-foreground);
   padding: 0.125rem 0.625rem;
@@ -290,6 +281,6 @@ pre {
 .string { color: #16a34a; }
 .number { color: #2563eb; }
 .boolean { color: #d946ef; }
+.null { color: #a1a1aa; }
 
-/* Utilities */
-.hidden { display: none; }
+.hidden { display: none !important; }

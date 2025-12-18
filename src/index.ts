@@ -58,6 +58,10 @@ const isCaptcha = (html: string, title: string) => {
 
 // --- Routes ---
 
+app.get('/playground', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'playground.html'));
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });

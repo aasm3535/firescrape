@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FireScrape Playground</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Specific Playground Styles */
+    body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+    .pg-layout { display: flex; flex: 1; height: calc(100vh - 65px); }
+    .pg-sidebar { width: 350px; border-right: 1px solid var(--border); padding: 1.5rem; background: var(--secondary); overflow-y: auto; display: flex; flex-direction: column; gap: 1.5rem; }
+    .pg-main { flex: 1; padding: 1.5rem; display: flex; flex-direction: column; overflow: hidden; background: var(--background); }
+    
+    .lang-select {
+      background: var(--background);
+      border: 1px solid var(--input);
+      border-radius: var(--radius);
+      padding: 0.5rem;
+      color: var(--foreground);
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+
+    .history-item {
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 0.5rem;
+      background: var(--card);
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .history-item:hover { border-color: var(--primary); }
+    .history-method { font-weight: 700; color: var(--primary); margin-right: 0.5rem; }
+    
+    .response-container {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--secondary);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .response-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--muted);
+    }
+    .res-tab {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border-right: 1px solid var(--border);
+      color: var(--muted-foreground);
+    }
+    .res-tab.active { background: var(--background); color: var(--foreground); font-weight: 500; }
+
+    .code-scroll {
+      flex: 1;
+      overflow: auto;
+      padding: 1rem;
+      font-family: 'Menlo', monospace;
+      font-size: 0.875rem;
+    }
+
+    @media (max-width: 768px) {
+      .pg-layout { flex-direction: column; height: auto; overflow-y: auto; }
+      .pg-sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+      body { overflow: auto; height: auto; }
+    }
+  </style>
+</head>
+<body class="light">
+
+  <!-- Header -->
+  <nav style="padding: 0.75rem 1.5rem; margin-bottom: 0;">
+    <a href="/" class="logo">
+      <i data-lucide="flame" style="color: var(--primary)"></i>
+      FireScrape <span style="font-weight: 400; color: var(--muted-foreground); margin-left: 0.5rem;">Playground</span>
+    </a>
+    <div class="nav-links">
+      <select id="langSwitcher" class="lang-select" onchange="changeLang(this.value)">
+        <option value="en">English</option>
+        <option value="ru">Русский</option>
+        <option value="es">Español</option>
+        <option value="zh">中文</option>
+      </select>
+      <button onclick="toggleTheme()" class="btn btn-ghost btn-sm">
+        <i data-lucide="moon" id="theme-icon" style="width: 16px;"></i>
+      </button>
+    </div>
+  </nav>
+
+  <div class="pg-layout">
+    <!-- Left Sidebar: Controls -->
+    <div class="pg-sidebar">
+      
+      <div>
+        <label class="t-method" style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Method</label>
+        <div class="tabs" style="width: 100%;">
+          <div class="tab active" onclick="setMode('scrape')" id="tab-scrape" style="flex:1">Scrape</div>
+          <div class="tab" onclick="setMode('search')" id="tab-search" style="flex:1">Search</div>
+        </div>
+      </div>
+
+      <div>
+        <label class="t-url" style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Target URL / Query</label>
+        <input type="text" id="inputField" placeholder="https://..." style="width: 100%;">
+      </div>
+
+      <button class="btn btn-primary" onclick="executeApi()" style="width: 100%;">
+        <i data-lucide="play" style="width: 16px; margin-right: 8px;"></i>
+        <span class="t-send">Send Request</span>
+      </button>
+
+      <div style="margin-top: auto;">
+        <label class="t-history" style="font-size: 0.75rem; font-weight: 600; color: var(--muted-foreground); margin-bottom: 0.5rem; display: block; text-transform: uppercase;">History</label>
+        <div id="history-list">
+          <!-- History items injected here -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Main: Output -->
+    <div class="pg-main">
+      <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="font-size: 1.25rem; margin: 0;" class="t-result">Result</h2>
+        <span id="status-badge" class="badge hidden">200 OK</span>
+      </div>
+
+      <div class="response-container">
+        <div class="response-tabs">
+          <div class="res-tab active" onclick="showTab('json')">JSON</div>
+          <div class="res-tab" onclick="showTab('preview')">Preview Text</div>
+        </div>
+        <div id="view-json" class="code-scroll">
+          <span style="color: var(--muted-foreground);" class="t-waiting">Waiting for request...</span>
+        </div>
+        <div id="view-preview" class="code-scroll hidden" style="white-space: pre-wrap; color: var(--foreground);">
+          <!-- Text content -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    
+    // --- State ---
+    let currentMode = 'scrape';
+    let history = JSON.parse(localStorage.getItem('fireHistory') || '[]');
+
+    // --- I18n Data ---
+    const translations = {
+      en: {
+        method: "Method",
+        scrape: "Scrape",
+        search: "Search",
+        urlLabel: "Target URL / Query",
+        send: "Send Request",
+        history: "History",
+        result: "Response",
+        waiting: "Waiting for request...",
+        error: "Error"
+      },
+      ru: {
+        method: "Метод",
+        scrape: "Парсинг",
+        search: "Поиск",
+        urlLabel: "Целевой URL / Запрос",
+        send: "Отправить запрос",
+        history: "История",
+        result: "Ответ",
+        waiting: "Ожидание запроса...",
+        error: "Ошибка"
+      },
+      es: {
+        method: "Método",
+        scrape: "Raspar",
+        search: "Buscar",
+        urlLabel: "URL de destino / Consulta",
+        send: "Enviar petición",
+        history: "Historia",
+        result: "Respuesta",
+        waiting: "Esperando solicitud...",
+        error: "Error"
+      },
+      zh: {
+        method: "方法",
+        scrape: "抓取",
+        search: "搜索",
+        urlLabel: "目标 URL / 查询",
+        send: "发送请求",
+        history: "历史",
+        result: "响应",
+        waiting: "等待请求...",
+        error: "错误"
+      }
+    };
+
+    function changeLang(lang) {
+      const t = translations[lang];
+      document.querySelector('.t-method').innerText = t.method;
+      document.getElementById('tab-scrape').innerText = t.scrape;
+      document.getElementById('tab-search').innerText = t.search;
+      document.querySelector('.t-url').innerText = t.urlLabel;
+      document.querySelector('.t-send').innerText = t.send;
+      document.querySelector('.t-history').innerText = t.history;
+      document.querySelector('.t-result').innerText = t.result;
+      
+      // Update placeholders logic will run on setMode
+      setMode(currentMode, true);
+    }
+
+    function setMode(mode, forceUpdate = false) {
+      if (!forceUpdate && mode === currentMode) return;
+      currentMode = mode;
+      
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-' + mode).classList.add('active');
+      
+      const input = document.getElementById('inputField');
+      if (mode === 'scrape') {
+        input.placeholder = "https://www.wildberries.ru/...";
+      } else {
+        input.placeholder = "iphone 15 pro max";
+      }
+    }
+
+    function renderHistory() {
+      const list = document.getElementById('history-list');
+      list.innerHTML = '';
+      history.slice(0, 5).forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerHTML = `<span class="history-method">${item.mode.toUpperCase()}</span> ${item.query.substring(0, 25)}${item.query.length > 25 ? '...' : ''}`;
+        div.onclick = () => {
+          setMode(item.mode);
+          document.getElementById('inputField').value = item.query;
+          executeApi();
+        };
+        list.appendChild(div);
+      });
+    }
+
+    function addToHistory(mode, query) {
+      history = [{mode, query}, ...history.filter(h => h.query !== query)].slice(0, 10);
+      localStorage.setItem('fireHistory', JSON.stringify(history));
+      renderHistory();
+    }
+
+    function showTab(tab) {
+      document.querySelectorAll('.res-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.code-scroll').forEach(d => d.classList.add('hidden'));
+      
+      // Select
+      const button = Array.from(document.querySelectorAll('.res-tab')).find(el => el.innerText.includes(tab === 'json' ? 'JSON' : 'Preview'));
+      if(button) button.classList.add('active'); // fallback selection logic
+      
+      // Simple toggle by index or class
+      if (tab === 'json') {
+         document.querySelectorAll('.res-tab')[0].classList.add('active');
+         document.getElementById('view-json').classList.remove('hidden');
+      } else {
+         document.querySelectorAll('.res-tab')[1].classList.add('active');
+         document.getElementById('view-preview').classList.remove('hidden');
+      }
+    }
+
+    // Syntax Highlight Logic (Same as before)
+    function syntaxHighlight(json) {
+      if (typeof json != 'string') {
+         json = JSON.stringify(json, undefined, 2);
+      }
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return json.replace(/("(\u[a-zA-Z0-9]{4}|\.[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null'; // Using null class
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      });
+    }
+
+    async function executeApi() {
+      const input = document.getElementById('inputField').value;
+      const jsonView = document.getElementById('view-json');
+      const previewView = document.getElementById('view-preview');
+      const badge = document.getElementById('status-badge');
+      
+      if (!input) return;
+
+      // Add to history
+      addToHistory(currentMode, input);
+
+      jsonView.innerHTML = '<span style="color: var(--muted-foreground)">Loading...</span>';
+      previewView.innerHTML = '';
+      badge.classList.add('hidden');
+
+      let endpoint = '';
+      if (currentMode === 'scrape') {
+        endpoint = `/api/scrape?url=${encodeURIComponent(input)}`;
+      } else {
+        endpoint = `/api/search?q=${encodeURIComponent(input)}`;
+      }
+
+      try {
+        const start = performance.now();
+        const res = await fetch(endpoint);
+        const end = performance.now();
+        const data = await res.json();
+
+        // Update Badge
+        badge.innerText = `${res.status} ${res.statusText} (${Math.round(end - start)}ms)`;
+        badge.style.backgroundColor = res.ok ? '#16a34a' : '#ef4444';
+        badge.classList.remove('hidden');
+
+        // Render JSON
+        jsonView.innerHTML = syntaxHighlight(data);
+
+        // Render Preview
+        if (data.data && data.data.content_preview) {
+          previewView.innerText = data.data.content_preview;
+        } else if (data.results) {
+           previewView.innerText = data.results.map(r => `[${r.title}]
+${r.snippet}
+${r.link}
+`).join('\n---\n');
+        } else {
+           previewView.innerText = "No text content available.";
+        }
+
+      } catch (err) {
+        jsonView.innerHTML = `<span style="color: #ef4444">${err.message}</span>`;
+      }
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const icon = document.getElementById('theme-icon');
+      if (body.classList.contains('dark')) {
+        body.classList.remove('dark');
+        icon.setAttribute('data-lucide', 'moon');
+      } else {
+        body.classList.add('dark');
+        icon.setAttribute('data-lucide', 'sun');
+      }
+      lucide.createIcons();
+    }
+
+    // Init
+    renderHistory();
+    // Auto detect lang
+    const sysLang = (navigator.language || 'en').substring(0, 2);
+    if(translations[sysLang]) {
+      document.getElementById('langSwitcher').value = sysLang;
+      changeLang(sysLang);
+    }
+  </script>
+</body>
+</html>
