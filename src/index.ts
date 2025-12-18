@@ -104,6 +104,10 @@ app.get('/playground', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'playground.html'));
 });
 
+app.get('/docs', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'docs.html'));
+});
+
 // API: Scrape
 app.get('/api/scrape', async (req: any, res: any) => {
   const { url } = req.query;
