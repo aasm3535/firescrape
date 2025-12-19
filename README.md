@@ -21,7 +21,17 @@
 
 Connect FireScrape to your AI tools to give them real-time web access.
 
-### ⚡ One-Line Install
+### ⚡ Recommended (NPM/Bun)
+
+No cloning required. Just run:
+
+```bash
+bunx @yutugyutugyutug/firescrape-mcp
+# or
+npx @yutugyutugyutug/firescrape-mcp
+```
+
+### ⚡ One-Line Install (Script)
 
 **PowerShell (Windows):**
 ```powershell
@@ -41,8 +51,8 @@ Add the following to your `claude_desktop_config.json`:
 {
   "mcpServers": {
     "firescrape": {
-      "command": "bun",
-      "args": ["run", "C:/path/to/firescrape-mcp/index.ts"]
+      "command": "bunx",
+      "args": ["@yutugyutugyutug/firescrape-mcp"]
     }
   }
 }
@@ -52,8 +62,8 @@ Add the following to your `claude_desktop_config.json`:
 1. Go to **Settings** > **General** > **MCP**.
 2. Click **Add New Server**.
 3. Select **Stdio**.
-4. **Command:** `bun`
-5. **Args:** `run C:/path/to/firescrape-mcp/index.ts`
+4. **Command:** `bunx`
+5. **Args:** `@yutugyutugyutug/firescrape-mcp`
 
 #### 3. Gemini CLI
 If you are using the `skillz` extension, ensure your `SKILLS_PATH` is configured and wrap the MCP server as a Skill, or check the extension documentation for generic MCP support.
