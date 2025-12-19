@@ -15,135 +15,180 @@
         extend: {
           colors: {
             border: "hsl(var(--border))",
-            input: "hsl(var(--input))",
-            ring: "hsl(var(--ring))",
             background: "hsl(var(--background))",
             foreground: "hsl(var(--foreground))",
-            primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
-            secondary: { DEFAULT: "hsl(var(--secondary))", foreground: "hsl(var(--secondary-foreground))" },
-            muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
-            accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
-            card: { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
+            muted: "hsl(var(--muted))",
+            "muted-foreground": "hsl(var(--muted-foreground))",
+            primary: "hsl(var(--primary))",
+            "primary-foreground": "hsl(var(--primary-foreground))",
           },
-          borderRadius: { lg: "var(--radius)", md: "calc(var(--radius) - 2px)", sm: "calc(var(--radius) - 4px)" },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Menlo', 'Monaco', 'Courier New', 'monospace'],
+          }
         },
       },
     }
   </script>
+  <style>
+    /* Hide scrollbar for sidebar */
+    aside::-webkit-scrollbar { display: none; }
+    aside { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
-<body class="min-h-screen bg-background font-sans antialiased">
+<body class="min-h-screen bg-background font-sans antialiased text-foreground selection:bg-muted selection:text-foreground">
   
-  <header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
-    <div class="container flex h-14 items-center">
-      <a href="/" class="mr-6 flex items-center space-x-2 font-bold">
-        <i data-lucide="box" class="h-5 w-5"></i>
+  <header class="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-sm">
+    <div class="container flex h-16 items-center justify-between">
+      <a href="/" class="flex items-center gap-2 font-bold text-lg">
+        <i data-lucide="flame" class="h-5 w-5"></i>
         <span>FireScrape</span>
       </a>
-      <div class="ml-auto flex items-center space-x-2">
-        <button onclick="toggleTheme()" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9">
-            <i data-lucide="moon" id="theme-icon" class="h-4 w-4"></i>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/aasm3535/firescrape" target="_blank" class="text-muted-foreground hover:text-foreground transition-colors">
+          <i data-lucide="github" class="h-5 w-5"></i>
+        </a>
+        <button onclick="toggleTheme()" class="text-muted-foreground hover:text-foreground transition-colors">
+            <i data-lucide="moon" id="theme-icon" class="h-5 w-5"></i>
         </button>
       </div>
     </div>
   </header>
 
-  <div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10 py-8">
+  <div class="container flex-1 items-start md:grid md:grid-cols-[240px_minmax(0,1fr)] md:gap-12 lg:gap-24 py-10">
     
-    <aside class="fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 overflow-y-auto border-r md:sticky md:block">
-        <div class="py-6 pr-6 lg:py-8">
-            <h4 class="mb-1 rounded-md px-2 py-1 text-sm font-semibold">Getting Started</h4>
-            <div class="grid grid-flow-row auto-rows-max text-sm">
-                <a href="#intro" class="group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:underline text-muted-foreground">Introduction</a>
-            </div>
-            <h4 class="mb-1 rounded-md px-2 py-1 text-sm font-semibold mt-4">API</h4>
-            <div class="grid grid-flow-row auto-rows-max text-sm">
-                <a href="#scrape" class="group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:underline text-muted-foreground">Scrape</a>
-                <a href="#search" class="group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:underline text-muted-foreground">Search</a>
-            </div>
-            <h4 class="mb-1 rounded-md px-2 py-1 text-sm font-semibold mt-4">MCP</h4>
-             <div class="grid grid-flow-row auto-rows-max text-sm">
-                <a href="#mcp" class="group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:underline text-muted-foreground">MCP Server</a>
-            </div>
+    <!-- Sidebar -->
+    <aside class="fixed top-20 z-30 -ml-2 hidden h-[calc(100vh-5rem)] w-full shrink-0 overflow-y-auto md:sticky md:block">
+        <div class="py-2">
+            <h4 class="mb-2 px-4 text-sm font-semibold tracking-wide">Guide</h4>
+            <nav class="grid gap-1 text-sm text-muted-foreground">
+                <a href="#intro" class="px-4 py-2 hover:text-foreground hover:bg-muted/50 rounded-md transition-colors block">Introduction</a>
+                <a href="#install" class="px-4 py-2 hover:text-foreground hover:bg-muted/50 rounded-md transition-colors block">Installation</a>
+            </nav>
+            
+            <h4 class="mt-8 mb-2 px-4 text-sm font-semibold tracking-wide">API Reference</h4>
+            <nav class="grid gap-1 text-sm text-muted-foreground">
+                <a href="#scrape" class="px-4 py-2 hover:text-foreground hover:bg-muted/50 rounded-md transition-colors block">Scrape Endpoint</a>
+                <a href="#search" class="px-4 py-2 hover:text-foreground hover:bg-muted/50 rounded-md transition-colors block">Search Endpoint</a>
+            </nav>
+
+            <h4 class="mt-8 mb-2 px-4 text-sm font-semibold tracking-wide">MCP Server</h4>
+             <nav class="grid gap-1 text-sm text-muted-foreground">
+                <a href="#mcp" class="px-4 py-2 hover:text-foreground hover:bg-muted/50 rounded-md transition-colors block">Setup & Usage</a>
+            </nav>
         </div>
     </aside>
 
-    <main class="relative py-6 lg:gap-10 lg:py-8">
-        <div class="mx-auto w-full min-w-0">
+    <!-- Content -->
+    <main class="relative w-full min-w-0">
+        
+        <section id="intro" class="mb-16">
+            <h1 class="text-4xl font-bold tracking-tight mb-4">Documentation</h1>
+            <p class="text-lg text-muted-foreground leading-relaxed">
+                FireScrape is a dual-purpose tool: a high-speed web scraping API and a Model Context Protocol (MCP) server for AI agents.
+            </p>
+        </section>
+
+        <section id="install" class="mb-16">
+            <h2 class="text-2xl font-semibold tracking-tight mb-6">Installation</h2>
             
-            <section id="intro" class="mb-10">
-                <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">Introduction</h1>
-                <p class="leading-7 text-muted-foreground">FireScrape is a simple, powerful API for extracting data from the web. It handles the hard parts: rotation, headers, and parsing.</p>
-            </section>
-
-            <section id="scrape" class="mb-10">
-                <h2 class="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mb-4">Scrape</h2>
-                <div class="rounded-md bg-muted p-4 mb-4">
-                    <code class="text-sm font-mono text-foreground">GET /api/scrape?url=...</code>
-                </div>
-                <p class="leading-7 text-muted-foreground">Returns the content of a page, including metadata and hidden JSON structures.</p>
-            </section>
-
-            <section id="search" class="mb-10">
-                <h2 class="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mb-4">Search</h2>
-                <div class="rounded-md bg-muted p-4 mb-4">
-                    <code class="text-sm font-mono text-foreground">GET /api/search?q=...</code>
-                </div>
-                <p class="leading-7 text-muted-foreground">Privacy-focused web search powered by DuckDuckGo.</p>
-            </section>
-
-            <section id="mcp" class="mb-10">
-                <h2 class="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mb-4">MCP Server</h2>
-                <p class="leading-7 text-muted-foreground mb-6">Use FireScrape directly inside Claude or Cursor. We provide an automated setup script.</p>
-                
-                <div class="space-y-6">
-                    <div>
-                        <h3 class="font-semibold mb-2 flex items-center gap-2"><i data-lucide="terminal" class="h-4 w-4"></i> Installation</h3>
-                        <div class="rounded-md bg-muted p-4 relative group">
-                            <div class="absolute right-4 top-4 text-xs text-muted-foreground font-mono">Terminal / PowerShell</div>
-                            <pre class="text-sm font-mono overflow-x-auto text-foreground whitespace-pre-wrap">git clone https://github.com/aasm3535/firescrape-mcp
-cd firescrape-mcp
-bun install</pre>
-                        </div>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div class="rounded-lg border p-4">
-                            <h4 class="font-medium mb-2 flex items-center gap-2 text-sm"><i data-lucide="monitor" class="h-4 w-4"></i> Windows (PowerShell)</h4>
-                            <p class="text-sm text-muted-foreground mb-3">Run the auto-installer:</p>
-                            <code class="text-xs bg-muted px-2 py-1 rounded block w-full">.\install.ps1</code>
-                        </div>
-                        <div class="rounded-lg border p-4">
-                            <h4 class="font-medium mb-2 flex items-center gap-2 text-sm"><i data-lucide="apple" class="h-4 w-4"></i> Mac / Linux</h4>
-                            <p class="text-sm text-muted-foreground mb-3">Run the auto-installer:</p>
-                            <code class="text-xs bg-muted px-2 py-1 rounded block w-full">chmod +x install.sh && ./install.sh</code>
-                        </div>
-                    </div>
-
-                    <div>
-                        <a href="https://github.com/aasm3535/firescrape-mcp" target="_blank" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full md:w-auto">
-                            View GitHub Repo <i data-lucide="external-link" class="ml-2 h-4 w-4"></i>
-                        </a>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="font-medium mb-3">NPM Package (MCP Server)</h3>
+                    <div class="bg-muted/50 rounded-lg p-4 font-mono text-sm flex items-center justify-between">
+                        <span>bun add @yutugyutugyutug/firescrape-mcp</span>
+                        <button class="text-muted-foreground hover:text-foreground" onclick="navigator.clipboard.writeText('bun add @yutugyutugyutug/firescrape-mcp')"><i data-lucide="copy" class="h-4 w-4"></i></button>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
+
+        <section id="scrape" class="mb-16">
+            <h2 class="text-2xl font-semibold tracking-tight mb-4">Scrape API</h2>
+            <p class="text-muted-foreground mb-6">GET request to extract content, metadata, and bypass bot protections.</p>
             
-        </div>
+            <div class="bg-muted/30 rounded-lg p-6 mb-4">
+                <div class="flex items-center gap-3 mb-4 font-mono text-sm">
+                    <span class="bg-primary text-primary-foreground px-2 py-0.5 rounded text-xs font-bold">GET</span>
+                    <span class="text-foreground">/api/scrape</span>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex gap-4">
+                        <span class="font-mono text-muted-foreground w-20">url</span>
+                        <span class="text-foreground">The target URL to scrape (required)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="search" class="mb-16">
+            <h2 class="text-2xl font-semibold tracking-tight mb-4">Search API</h2>
+            <p class="text-muted-foreground mb-6">Anonymous web search powered by DuckDuckGo.</p>
+            
+            <div class="bg-muted/30 rounded-lg p-6">
+                <div class="flex items-center gap-3 mb-4 font-mono text-sm">
+                    <span class="bg-primary text-primary-foreground px-2 py-0.5 rounded text-xs font-bold">GET</span>
+                    <span class="text-foreground">/api/search</span>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex gap-4">
+                        <span class="font-mono text-muted-foreground w-20">q</span>
+                        <span class="text-foreground">Search query (required)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mcp" class="mb-24">
+            <h2 class="text-2xl font-semibold tracking-tight mb-6">MCP Server</h2>
+            <p class="text-muted-foreground mb-6">
+                Connect FireScrape to Claude Desktop or Cursor to give your AI web access.
+            </p>
+
+            <div class="grid gap-6">
+                <div class="p-6 rounded-lg bg-muted/30">
+                    <h3 class="font-semibold mb-4 flex items-center gap-2">
+                        <i data-lucide="terminal" class="h-4 w-4"></i> Quick Run
+                    </h3>
+                    <p class="text-sm text-muted-foreground mb-4">Run directly without installation (using Bun or Node):</p>
+                    <code class="block bg-background p-3 rounded text-sm font-mono text-foreground">
+                        bunx @yutugyutugyutug/firescrape-mcp
+                    </code>
+                </div>
+
+                <div class="p-6 rounded-lg bg-muted/30">
+                    <h3 class="font-semibold mb-4 flex items-center gap-2">
+                        <i data-lucide="settings" class="h-4 w-4"></i> Claude Configuration
+                    </h3>
+                    <pre class="bg-background p-4 rounded text-sm font-mono overflow-x-auto text-muted-foreground"><span class="text-foreground">"firescrape":</span> {
+  <span class="text-foreground">"command":</span> "bunx",
+  <span class="text-foreground">"args":</span> ["@yutugyutugyutug/firescrape-mcp"]
+}</pre>
+                </div>
+            </div>
+        </section>
+        
     </main>
-
   </div>
 
   <script>
     lucide.createIcons();
+    
     function toggleTheme() {
         const isDark = document.documentElement.classList.toggle('dark');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         updateThemeIcon();
     }
+    
     function updateThemeIcon() {
         const isDark = document.documentElement.classList.contains('dark');
-        document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
-        lucide.createIcons();
+        const icon = document.getElementById('theme-icon');
+        if(icon) {
+            icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
     }
+
     const savedTheme = localStorage.getItem('theme');
     const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (savedTheme === 'dark' || (!savedTheme && sysDark)) document.documentElement.classList.add('dark');
