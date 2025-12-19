@@ -1,117 +1,108 @@
 # FireScrape 🔥
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Faasm3535%2Ffirescrape)
-![Bun](https://img.shields.io/badge/Bun-v1.x-black?logo=bun)
-![License](https://img.shields.io/github/license/aasm3535/firescrape)
+[![Bun](https://img.shields.io/badge/Bun-v1.x-000000?style=flat&logo=bun)](https://bun.sh)
+[![License](https://img.shields.io/github/license/aasm3535/firescrape?style=flat&color=blue)](https://github.com/aasm3535/firescrape)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=flat&logo=vercel)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Faasm3535%2Ffirescrape)
 
-**FireScrape** is a powerful, lightweight web scraper and search API built on Bun and Express. It is designed to be deployed instantly on Vercel.
-
-**FireScrape** — это мощный и легкий API для скрапинга и поиска, построенный на Bun и Express. Создан для мгновенного развертывания на Vercel.
+**FireScrape** is a lightweight, high-performance web scraper and search API built on **Bun** and **Express**. It simplifies data extraction and web search into a clean, JSON-based API.
 
 ---
 
-## 🚀 Features / Возможности
+## 🚀 Features
 
-- **🔥 Smart Scraper**: Bypasses basic bot protections by rotating User-Agents and mimicking browser headers.
-- **🔍 Search API**: Get web search results (DuckDuckGo style) in clean JSON.
-- **⚡ Bun Powered**: Extremely fast execution.
-- **🌑 Dark/Light Mode**: Beautiful landing page that adapts to your system theme.
-
-- **🔥 Умный Скрапер**: Обходит базовые защиты, имитируя заголовки реального браузера.
-- **🔍 API Поиска**: Получайте результаты поиска в чистом JSON.
-- **⚡ На базе Bun**: Экстремально быстрая работа.
-- **🌑 Темная/Светлая тема**: Красивый лендинг, адаптирующийся под вашу систему.
+- **Smart Scraper:** Automatically rotates User-Agents and headers to mimic real browsers.
+- **Search API:** Direct access to search engine results (DuckDuckGo style) in JSON.
+- **MCP Server:** Integrate directly with Claude Desktop, Cursor, and other AI agents.
+- **Dark Mode:** Beautiful, minimalist landing page included.
 
 ---
 
-## 🛠 API Usage / Использование API
+## 📦 MCP Installation (AI Agents)
 
-### 1. Scrape a Website / Парсинг сайта
+Connect FireScrape to your AI tools to give them real-time web access.
 
-Extract title, description, image, and text content from any URL.
-Извлекает заголовок, описание, картинку и текст с любого URL.
+### ⚡ One-Line Install
 
-**Endpoint:** `GET /api/scrape`
-
-**Parameters:**
-- `url` (required): The target URL.
-
-**Example / Пример:**
-```bash
-curl "https://your-project.vercel.app/api/scrape?url=https://example.com"
+**PowerShell (Windows):**
+```powershell
+irm https://raw.githubusercontent.com/aasm3535/firescrape-mcp/refs/heads/main/install.ps1 | iex
 ```
 
-**Response:**
+**Bash (Mac/Linux):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/aasm3535/firescrape-mcp/refs/heads/main/install.sh | bash
+```
+
+### 🛠️ Manual Configuration
+
+#### 1. Claude Desktop
+Add the following to your `claude_desktop_config.json`:
 ```json
 {
-  "success": true,
-  "data": {
-    "url": "https://example.com",
-    "title": "Example Domain",
-    "description": "...",
-    "image": "",
-    "content": "Example Domain This domain is for..."
+  "mcpServers": {
+    "firescrape": {
+      "command": "bun",
+      "args": ["run", "C:/path/to/firescrape-mcp/index.ts"]
+    }
   }
 }
 ```
 
-### 2. Web Search / Поиск в сети
+#### 2. Cursor Editor
+1. Go to **Settings** > **General** > **MCP**.
+2. Click **Add New Server**.
+3. Select **Stdio**.
+4. **Command:** `bun`
+5. **Args:** `run C:/path/to/firescrape-mcp/index.ts`
 
-Search the web and get a list of results.
-Поиск в интернете и получение списка результатов.
+#### 3. Gemini CLI
+If you are using the `skillz` extension, ensure your `SKILLS_PATH` is configured and wrap the MCP server as a Skill, or check the extension documentation for generic MCP support.
 
-**Endpoint:** `GET /api/search`
+---
 
-**Parameters:**
-- `q` (required): Search query.
+## 🛠 Usage
 
-**Example / Пример:**
-```bash
-curl "https://your-project.vercel.app/api/search?q=bun+js"
-```
+### Scrape a Page
+`GET /api/scrape?url=https://example.com`
 
-**Response:**
 ```json
 {
   "success": true,
-  "query": "bun js",
+  "data": {
+    "title": "Example Domain",
+    "description": "...",
+    "content": "..."
+  }
+}
+```
+
+### Search the Web
+`GET /api/search?q=bun+js`
+
+```json
+{
+  "success": true,
   "results": [
-    {
-      "title": "Bun — A fast all-in-one JavaScript runtime",
-      "link": "https://bun.sh/",
-      "snippet": "Bun is a fast all-in-one JavaScript runtime..."
-    }
+    { "title": "Bun - A fast all-in-one JavaScript runtime", "link": "https://bun.sh" }
   ]
 }
 ```
 
 ---
 
-## 💻 Local Development / Локальная разработка
+## 💻 Local Development
 
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/aasm3535/firescrape.git
-   cd firescrape
-   ```
+```bash
+git clone https://github.com/aasm3535/firescrape.git
+cd firescrape
+bun install
+bun dev
+```
 
-2. Install dependencies:
-   ```bash
-   bun install
-   ```
-
-3. Run the server:
-   ```bash
-   bun dev
-   ```
-
-4. Open `http://localhost:3000`
+Open [http://localhost:3000](http://localhost:3000) to see the landing page.
 
 ---
 
-## ☁️ Deploy / Деплой
-
-Click the button below to deploy your own instance to Vercel for free.
-Нажмите кнопку ниже, чтобы бесплатно развернуть свой экземпляр на Vercel.
+## ☁️ Deploy
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Faasm3535%2Ffirescrape)

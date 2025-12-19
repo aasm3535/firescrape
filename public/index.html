@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FireScrape</title>
+  <title>FireScrape - The Web Scraping API</title>
   <link rel="stylesheet" href="/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -11,165 +11,125 @@
     tailwind.config = {
       darkMode: 'class',
       theme: {
-        container: { center: true, padding: "2rem", screens: { "2xl": "1400px" } },
         extend: {
           colors: {
-            border: "hsl(var(--border))",
-            input: "hsl(var(--input))",
-            ring: "hsl(var(--ring))",
             background: "hsl(var(--background))",
             foreground: "hsl(var(--foreground))",
-            primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
-            secondary: { DEFAULT: "hsl(var(--secondary))", foreground: "hsl(var(--secondary-foreground))" },
-            destructive: { DEFAULT: "hsl(var(--destructive))", foreground: "hsl(var(--destructive-foreground))" },
-            muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
-            accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
-            popover: { DEFAULT: "hsl(var(--popover))", foreground: "hsl(var(--popover-foreground))" },
-            card: { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
-          },
-          borderRadius: { lg: "var(--radius)", md: "calc(var(--radius) - 2px)", sm: "calc(var(--radius) - 4px)" },
-        },
-      },
+            muted: "hsl(var(--muted))",
+            "muted-foreground": "hsl(var(--muted-foreground))",
+            border: "hsl(var(--border))",
+          }
+        }
+      }
     }
   </script>
 </head>
-<body class="min-h-screen bg-background font-sans antialiased">
-  
-  <div class="flex flex-col min-h-screen">
-    <header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div class="container flex h-14 items-center">
-        <a href="/" class="mr-6 flex items-center space-x-2 font-bold">
-          <i data-lucide="box" class="h-5 w-5"></i>
-          <span>FireScrape</span>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full border-b border-border py-4">
+    <div class="container flex items-center justify-between">
+      <div class="flex items-center gap-2 font-semibold text-lg tracking-tight">
+        <i data-lucide="flame" class="h-5 w-5"></i>
+        <span>FireScrape</span>
+      </div>
+      <nav class="flex items-center gap-6 text-sm font-medium text-muted-foreground">
+        <a href="/docs" class="hover:text-foreground transition-colors">Docs</a>
+        <a href="https://github.com/aasm3535/firescrape" target="_blank" class="hover:text-foreground transition-colors">GitHub</a>
+        <button onclick="toggleTheme()" class="hover:text-foreground transition-colors">
+          <i data-lucide="moon" id="theme-icon" class="h-4 w-4"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main class="flex-1 flex flex-col justify-center py-20">
+    <div class="container max-w-2xl text-center space-y-8">
+      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
+        Scrape the web <br/> without the headache.
+      </h1>
+      <p class="text-lg text-muted-foreground leading-relaxed">
+        A powerful, open-source scraping and search API built on Bun. 
+        Designed for speed, simplicity, and bypassing bot protections.
+      </p>
+      
+      <div class="flex items-center justify-center gap-4 pt-4">
+        <a href="/docs" class="btn btn-primary h-10 px-6">
+          Start Scraping
         </a>
-        <nav class="flex items-center space-x-6 text-sm font-medium">
-          <a href="/docs" class="transition-colors hover:text-foreground/80 text-foreground/60" data-i18n="nav_docs">Docs</a>
-          <a href="/playground" class="transition-colors hover:text-foreground/80 text-foreground/60" data-i18n="nav_play">Playground</a>
-        </nav>
-        <div class="ml-auto flex items-center space-x-2">
-           <button onclick="toggleTheme()" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9">
-              <i data-lucide="moon" id="theme-icon" class="h-4 w-4"></i>
-           </button>
+        <div class="code-block flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground bg-muted/50">
+          <span class="select-none">$</span>
+          <span class="text-foreground">bun add firescrape</span>
+          <button onclick="copyInstall()" class="ml-2 hover:text-foreground">
+            <i data-lucide="copy" class="h-3 w-3"></i>
+          </button>
         </div>
       </div>
-    </header>
+    </div>
 
-    <main class="flex-1">
-      <section class="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-        <div class="flex max-w-[980px] flex-col items-start gap-2">
-          <h1 class="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl" data-i18n="hero_title">
-            Beautifully designed API <br class="hidden sm:inline">
-            for web scraping.
-          </h1>
-          <p class="max-w-[700px] text-lg text-muted-foreground" data-i18n="hero_desc">
-            Accessible, serverless, and open-source. Bypasses bot detection instantly.
-          </p>
+    <!-- Feature Grid -->
+    <div class="container max-w-4xl grid md:grid-cols-3 gap-8 mt-24">
+      <div class="space-y-2">
+        <div class="h-10 w-10 flex items-center justify-center rounded-lg bg-muted text-foreground">
+          <i data-lucide="zap" class="h-5 w-5"></i>
         </div>
-        <div class="flex gap-4">
-          <a href="/playground" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" data-i18n="btn_start">
-            Get Started
-          </a>
-          <a href="https://github.com/aasm3535/firescrape" target="_blank" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-            GitHub
-          </a>
-        </div>
-      </section>
-
-      <section class="container py-8 md:py-12 lg:py-24">
-        <div class="grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3 mx-auto">
-          <div class="relative overflow-hidden rounded-lg border bg-background p-2">
-            <div class="flex h-[180px] flex-col justify-between rounded-md p-6">
-              <i data-lucide="shield" class="h-10 w-10 text-foreground"></i>
-              <div class="space-y-2">
-                <h3 class="font-bold" data-i18n="feat1t">Anti-Bot</h3>
-                <p class="text-sm text-muted-foreground" data-i18n="feat1d">Automated header rotation to bypass 403s.</p>
-              </div>
-            </div>
-          </div>
-          <div class="relative overflow-hidden rounded-lg border bg-background p-2">
-            <div class="flex h-[180px] flex-col justify-between rounded-md p-6">
-              <i data-lucide="code-2" class="h-10 w-10 text-foreground"></i>
-              <div class="space-y-2">
-                <h3 class="font-bold" data-i18n="feat2t">JSON Data</h3>
-                <p class="text-sm text-muted-foreground" data-i18n="feat2d">Extracts structured data from SPAs.</p>
-              </div>
-            </div>
-          </div>
-          <div class="relative overflow-hidden rounded-lg border bg-background p-2">
-            <div class="flex h-[180px] flex-col justify-between rounded-md p-6">
-              <i data-lucide="zap" class="h-10 w-10 text-foreground"></i>
-              <div class="space-y-2">
-                <h3 class="font-bold" data-i18n="feat3t">Fast</h3>
-                <p class="text-sm text-muted-foreground" data-i18n="feat3d">Running on Vercel Edge Runtime.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-    
-    <footer class="py-6 md:px-8 md:py-0">
-      <div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-        <p class="text-center text-sm leading-loose text-muted-foreground md:text-left">
-          Built by <a href="#" class="font-medium underline underline-offset-4">FireScrape</a>.
-        </p>
+        <h3 class="font-semibold text-foreground">Blazing Fast</h3>
+        <p class="text-sm text-muted-foreground">Built on Bun runtime for sub-millisecond overhead.</p>
       </div>
-    </footer>
-  </div>
+      <div class="space-y-2">
+        <div class="h-10 w-10 flex items-center justify-center rounded-lg bg-muted text-foreground">
+          <i data-lucide="shield-check" class="h-5 w-5"></i>
+        </div>
+        <h3 class="font-semibold text-foreground">Bot Bypass</h3>
+        <p class="text-sm text-muted-foreground">Smart header rotation to look like a real browser.</p>
+      </div>
+      <div class="space-y-2">
+        <div class="h-10 w-10 flex items-center justify-center rounded-lg bg-muted text-foreground">
+          <i data-lucide="search" class="h-5 w-5"></i>
+        </div>
+        <h3 class="font-semibold text-foreground">Search API</h3>
+        <p class="text-sm text-muted-foreground">Integrated search results with clean JSON output.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-border py-8 mt-auto">
+    <div class="container text-center text-sm text-muted-foreground">
+      <p>&copy; 2025 FireScrape. Open Source under MIT License.</p>
+    </div>
+  </footer>
 
   <script>
     lucide.createIcons();
 
-    // Simple I18n
-    const i18n = {
-      en: {
-        nav_docs: "Documentation", nav_play: "Playground",
-        hero_title: "Beautifully designed API <br class='hidden sm:inline'>for web scraping.",
-        hero_desc: "Accessible, serverless, and open-source. Bypasses bot detection instantly.",
-        btn_start: "Get Started",
-        feat1t: "Anti-Bot", feat1d: "Automated header rotation to bypass 403s.",
-        feat2t: "JSON Data", feat2d: "Extracts structured data from SPAs.",
-        feat3t: "Fast", feat3d: "Running on Vercel Edge Runtime."
-      },
-      ru: {
-        nav_docs: "Документация", nav_play: "Песочница",
-        hero_title: "Красивый API <br class='hidden sm:inline'>для веб-скрейпинга.",
-        hero_desc: "Доступный, серверлесс и open-source. Обходит защиту от ботов.",
-        btn_start: "Начать",
-        feat1t: "Анти-Бот", feat1d: "Автоматическая ротация заголовков.",
-        feat2t: "JSON Данные", feat2d: "Извлекает данные из SPA приложений.",
-        feat3t: "Быстро", feat3d: "Работает на Vercel Edge Runtime."
-      }
-    };
-
-    function changeLang(lang) {
-      const t = i18n[lang] || i18n['en'];
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (t[key]) el.innerHTML = t[key];
-      });
-      localStorage.setItem('lang', lang);
-    }
-    
-    // Theme
     function toggleTheme() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      updateThemeIcon();
-    }
-    function updateThemeIcon() {
-        const isDark = document.documentElement.classList.contains('dark');
-        document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
-        lucide.createIcons();
+      updateThemeIcon(isDark);
     }
 
+    function updateThemeIcon(isDark) {
+      const icon = document.getElementById('theme-icon');
+      icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+      lucide.createIcons();
+    }
+
+    function copyInstall() {
+      navigator.clipboard.writeText('bun add firescrape');
+      // Optional: Show feedback
+    }
+
+    // Init Theme
     const savedTheme = localStorage.getItem('theme');
     const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (savedTheme === 'dark' || (!savedTheme && sysDark)) document.documentElement.classList.add('dark');
-    updateThemeIcon();
-
-    const savedLang = localStorage.getItem('lang') || 'en';
-    if(i18n[savedLang]) changeLang(savedLang);
+    if (savedTheme === 'dark' || (!savedTheme && sysDark)) {
+      document.documentElement.classList.add('dark');
+      updateThemeIcon(true);
+    } else {
+      updateThemeIcon(false);
+    }
   </script>
 </body>
 </html>
